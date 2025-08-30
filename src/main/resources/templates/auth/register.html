@@ -8,24 +8,42 @@
 </head>
 <body>
 <h2>Регистрация</h2>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <label>Имя пользователя: <input type="text" th:field="*{username}" required></label><br>
-    <label>Email: <input type="email" th:field="*{email}" required></label><br>
-    <label>Пароль: <input type="password" th:field="*{password}" required></label><br>
 
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <!-- Имя пользователя -->
+    <label>Имя пользователя:
+        <input type="text" th:field="*{username}" required>
+    </label>
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br>
+
+    <!-- Email -->
+    <label>Email:
+        <input type="email" th:field="*{email}" required>
+    </label>
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div><br>
+
+    <!-- Пароль -->
+    <label>Пароль:
+        <input type="password" th:field="*{password}" required>
+    </label>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br>
+
+    <!-- Выбор режима -->
     <label>
         <input type="radio" name="mode" value="admin" checked> Создать новую группу (Админ)
     </label><br>
     <label>
-        <input type="radio" name="mode" value="member"> Войти в существующую группу по токену
+        <input type="radio" name="mode" value="member"> Присоедениться к существующей группе по токену
     </label><br>
-    <input type="text" name="groupToken" placeholder="Введите токен" disabled>
+
+    <!-- Токен группы -->
+    <input type="text" name="groupToken" placeholder="Введите токен" disabled><br><br>
 
     <button type="submit">Зарегистрироваться</button>
 </form>
 
 <script>
-    // включение/выключение поля "токен"
+    // Включение/выключение поля "токен"
     document.querySelectorAll('input[name="mode"]').forEach(radio => {
         radio.addEventListener('change', function() {
             document.querySelector('input[name="groupToken"]').disabled = this.value !== 'member';
@@ -33,6 +51,7 @@
     });
 </script>
 
+<!-- Ошибки общего характера -->
 <div th:if="${error}">
     <p class="error" th:text="${error}"></p>
 </div>

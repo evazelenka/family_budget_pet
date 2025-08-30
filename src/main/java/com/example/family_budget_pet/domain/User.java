@@ -1,6 +1,9 @@
 package com.example.family_budget_pet.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.HashSet;
@@ -21,10 +24,15 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Имя обязательно.")
     private String username;
 
+    @Email
+    @NotBlank(message = "Email обязателен.")
     private String email;
 
+    @NotBlank(message = "Пароль обязателен.")
+    @Size(min = 6, message = "Пароль должен быть не менее 6 символов.")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

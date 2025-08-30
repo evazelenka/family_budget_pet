@@ -34,4 +34,8 @@ public class Group {
     private Set<User> users = new HashSet<>();
 
     private String token;
+
+    public void addUser(User user){
+        users.add(user);
+    }
 }
