@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title} ?: 'Family Budget'"></title>
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -19,7 +19,10 @@
 </header>
 
 <main>
-    <div th:replace="~{::content}"></div>
+    <!-- Здесь вставляется содержимое страницы -->
+    <div th:fragment="content">
+        <div th:insert="$pageContent"></div>
+    </div>
 </main>
 
 <footer>

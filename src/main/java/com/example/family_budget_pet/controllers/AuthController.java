@@ -55,7 +55,9 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
-        return "auth/register"; // имя Thymeleaf шаблона
+        model.addAttribute("pageContent", "auth/register :: content");
+        model.addAttribute("title", "Регистрация");
+        return "layout"; // имя Thymeleaf шаблона
     }
 
     @PostMapping("/register")
