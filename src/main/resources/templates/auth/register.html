@@ -1,4 +1,32 @@
-<div th:fragment="content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'"></title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header>
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
+        <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+        <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
+    </nav>
+</header>
+<h2>Регистрация</h2>
+
 <form th:action="@{/auth/register}" th:object="${user}" method="post">
     <!-- Имя пользователя -->
     <label>Имя пользователя:
@@ -23,26 +51,27 @@
         <input type="radio" name="mode" value="admin" checked> Создать новую группу (Админ)
     </label><br>
     <label>
-        <input type="radio" name="mode" value="member"> Войти в существующую группу по токену
+        <input type="radio" name="mode" value="member"> Присоедениться к существующей группе по токену
     </label><br>
 
-    <!-- Поле токена -->
+    <!-- Токен группы -->
     <input type="text" name="groupToken" placeholder="Введите токен" disabled><br><br>
 
     <button type="submit">Зарегистрироваться</button>
 </form>
 
-<!-- Общая ошибка -->
-<div th:if="${error}">
-    <p class="error" th:text="${error}"></p>
-</div>
-
-<!-- Скрипт для включения/выключения поля токена -->
 <script>
+    // Включение/выключение поля "токен"
     document.querySelectorAll('input[name="mode"]').forEach(radio => {
         radio.addEventListener('change', function() {
             document.querySelector('input[name="groupToken"]').disabled = this.value !== 'member';
         });
     });
 </script>
+
+<!-- Ошибки общего характера -->
+<div th:if="${error}">
+    <p class="error" th:text="${error}"></p>
 </div>
+</body>
+</html>

@@ -27,7 +27,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User save(User user){
+    public User save(User user, String mode){
+        user.getRoles().addAll(getRoles(mode));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -63,5 +65,14 @@ public class UserService {
         user.getRoles().addAll(roles);
 
         return userRepository.save(user);
+    }
+
+    private Set<Role> getRoles(String mode){
+        Set<Role> roles = new HashSet<>();
+        String roleName = (mode.equals("admin"))
+                ? "ROLE_ADMIN" : "ROLE_USER";
+        Role role = roleRepository.findByName(roleName).orElse(null);
+        roles.add(role);
+        return roles;
     }
 }

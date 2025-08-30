@@ -32,8 +32,9 @@ public class GroupService {
         result.append("token");
         for (int i = 0; i < adminPart.length; i++) {
             Random rnd = new Random();
-            result.append(adminPart[rnd.nextInt(adminPart.length)-1])
-                    .append(groupPart[rnd.nextInt(groupPart.length-1)])
+//            int a = rnd.nextInt()
+            result.append(adminPart[rnd.nextInt(0, adminPart.length-1)])
+                    .append(groupPart[rnd.nextInt(0, groupPart.length-1)])
                     .append(rnd.nextInt(i));
         }
         return result.toString();

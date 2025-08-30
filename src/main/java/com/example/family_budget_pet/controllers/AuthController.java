@@ -1,6 +1,7 @@
 package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.Group;
+import com.example.family_budget_pet.domain.Role;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.UserService;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/auth")
@@ -55,9 +59,8 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("pageContent", "auth/register :: content");
         model.addAttribute("title", "Регистрация");
-        return "layout"; // имя Thymeleaf шаблона
+        return "auth/register"; // имя Thymeleaf шаблона
     }
 
     @PostMapping("/register")
@@ -74,14 +77,7 @@ public class AuthController {
 
         try {
             if ("admin".equals(mode)) {
-                Group group = new Group();
-                group.setGroupName(user.getUsername() + "'s Group");
-                group.setAdmin(user);
-                group.addUser(user);
-
-                groupService.save(group);
-                userService.save(user);
-
+                userService.save(user, mode);
             } else if ("member".equals(mode) && groupToken.startsWith("token")) {
                 Group group = groupService.findByToken(groupToken);
                 if (group == null) {
@@ -89,7 +85,7 @@ public class AuthController {
                     return "auth/register";
                 }
                 group.addUser(user);
-                userService.save(user);
+                userService.save(user, mode);
                 groupService.save(group);
             }
         } catch (Exception e) {

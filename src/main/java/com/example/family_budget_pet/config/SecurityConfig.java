@@ -41,14 +41,12 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
-
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder,
                                                        MyUserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
 
