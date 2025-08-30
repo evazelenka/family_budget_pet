@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: content">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'"></title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h2>Семейный учет</h2>
+
+<p>Ваш токен для подключения: <strong th:text="${groupToken}"></strong></p>
+<form th:action="@{/admin/group/regenerate}" method="post">
+    <button type="submit">Сгенерировать новый токен</button>
+</form>
+</body>
+</html>

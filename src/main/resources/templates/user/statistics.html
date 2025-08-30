@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: content">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'"></title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h2>Статистика</h2>
+
+<h3>Текущий месяц</h3>
+<p>Доход: <span th:text="${monthlyIncome}"></span></p>
+<p>Расход: <span th:text="${monthlyExpense}"></span></p>
+
+<h3>Год</h3>
+<p>Доход: <span th:text="${yearlyIncome}"></span></p>
+<p>Расход: <span th:text="${yearlyExpense}"></span></p>
+</body>
+</html>

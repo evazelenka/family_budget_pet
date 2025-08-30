@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: content">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'"></title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h2>Мой бюджет</h2>
+<a class="btn" th:href="@{/transactions}">Мои транзакции</a>
+<a class="btn" th:href="@{/statistics}">Статистика</a>
+</body>
+</html>

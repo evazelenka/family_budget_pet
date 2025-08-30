@@ -37,4 +37,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Group> groups = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "admin_group_id")
+    private Group adminOfGroup;
 }

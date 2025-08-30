@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: content">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'"></title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h2>Регистрация</h2>
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <label>Имя пользователя: <input type="text" th:field="*{username}" required></label><br>
+    <label>Email: <input type="email" th:field="*{email}" required></label><br>
+    <label>Пароль: <input type="password" th:field="*{password}" required></label><br>
+
+    <label>
+        <input type="radio" name="mode" value="admin" checked> Создать новую группу (Админ)
+    </label><br>
+    <label>
+        <input type="radio" name="mode" value="member"> Войти в существующую группу по токену
+    </label><br>
+    <input type="text" name="groupToken" placeholder="Введите токен" disabled>
+
+    <button type="submit">Зарегистрироваться</button>
+</form>
+
+<script>
+    // включение/выключение поля "токен"
+    document.querySelectorAll('input[name="mode"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelector('input[name="groupToken"]').disabled = this.value !== 'member';
+        });
+    });
+</script>
+
+<div th:if="${error}">
+    <p class="error" th:text="${error}"></p>
+</div>
+</body>
+</html>
