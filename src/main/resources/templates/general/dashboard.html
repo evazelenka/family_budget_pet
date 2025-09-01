@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+
+        <a th:href="@{/}">Главная</a>
+
+        <!-- Блок для USER -->
+        <span sec:authorize="hasRole('USER')">
+            <a th:href="@{/budget}">Мой бюджет</a>
+            <a th:href="@{/transactions}">Мои транзакции</a>
+            <a th:href="@{/statistics}">Статистика</a>
+        </span>
+
+        <!-- Блок для ADMIN -->
+        <span sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/dashboard}">Админ панель</a>
+            <a th:href="@{/admin/users}">Управление пользователями</a>
+            <a th:href="@{/admin/group}">Семейный учет</a>
+        </span>
+
+        <!-- Авторизация -->
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
+    </nav>
+</header>
+
+<main>
+    <!-- Контент для USER -->
+    <div sec:authorize="hasRole('USER')">
+        <h2>Мой бюджет</h2>
+        <p>Здесь отображаются ваши транзакции и статистика.</p>
+    </div>
+
+    <!-- Контент для ADMIN -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <h2>Админ панель</h2>
+<!--        <a class="btn" th:href="@{/admin/users}">Управление пользователями</a>-->
+<!--        <a class="btn" th:href="@{/admin/group}">Семейный учет</a>-->
+    </div>
+</main>
+</body>
+</html>

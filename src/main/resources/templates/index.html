@@ -9,7 +9,8 @@
 <body>
 <header>
     <nav>
-        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/family/welcome}">Главная</a>
+        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
         <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
         <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
         <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>

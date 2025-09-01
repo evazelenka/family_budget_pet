@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
@@ -18,9 +18,9 @@
     </nav>
 </header>
 <h2>Семейный учет</h2>
-
+<p>Ваша группа: <strong th:text="${groupName}"></strong></p>
 <p>Ваш токен для подключения: <strong th:text="${groupToken}"></strong></p>
-<form th:action="@{/admin/group/regenerate}" method="post">
+<form th:action="@{/admin/group/new-token}" method="post">
     <button type="submit">Сгенерировать новый токен</button>
 </form>
 </body>

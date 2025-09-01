@@ -22,6 +22,7 @@ public class SecurityConfig {
 
     private final MyUserDetailsService userDetailsService;
     private final MyAccessDeniedHandler accessDeniedHandler;
+    private final MyAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,10 +31,13 @@ public class SecurityConfig {
                         .requestMatchers("/auth/register", "/auth/login", "/family/welcome", "/css/style.css").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler))
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .successHandler(authenticationSuccessHandler)
+                        .permitAll())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
-
     }
 
     @Bean

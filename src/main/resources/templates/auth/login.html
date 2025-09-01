@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
     <nav>
-        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/family/welcome}">Главная</a>
         <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
         <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
         <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>

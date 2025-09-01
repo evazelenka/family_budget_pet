@@ -1,7 +1,6 @@
 package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.Group;
-import com.example.family_budget_pet.domain.Role;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.service.AuthService;
 import com.example.family_budget_pet.service.GroupService;
@@ -12,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/auth")
@@ -35,23 +31,23 @@ public class AuthController {
         model.addAttribute("title", "Вход");
         return "auth/login";
     }
-
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String username,
-                            @RequestParam String password,
-                            Model model,
-                            HttpSession httpSession){
-        User user = userService.findByUsername(username);
-        if (user == null || !user.getPassword().equals(password)){
-            model.addAttribute("title", "Вход");
-            model.addAttribute("error", "Неверное имя пользователя или пароль!");
-            return "auth/login";
-        }
-        httpSession.setAttribute("loggedUser", user);
-        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
-        if (isAdmin) return "redirect:admin/dashboard";
-        return "redirect:user/dashboard";
-    }
+//
+//    @PostMapping("/login")
+//    public String loginUser(@RequestParam String username,
+//                            @RequestParam String password,
+//                            Model model,
+//                            HttpSession httpSession){
+//        User user = userService.findByUsername(username);
+//        if (user == null || !user.getPassword().equals(password)){
+//            model.addAttribute("title", "Вход");
+//            model.addAttribute("error", "Неверное имя пользователя или пароль!");
+//            return "auth/login";
+//        }
+//        httpSession.setAttribute("loggedUser", user);
+//        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+//        if (isAdmin) return "redirect:admin/dashboard";
+//        return "redirect:user/dashboard";
+//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession){

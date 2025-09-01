@@ -25,7 +25,11 @@ public class GroupService {
         return groupRepository.findByToken(token).orElse(null);
     }
 
-    private String generateToken(String rawAdminPart, String rawGroupPart){
+    public Group findByAdminId(Long adminId){
+        return groupRepository.findByAdmin_Id(adminId).orElse(null);
+    }
+
+    public String generateToken(String rawAdminPart, String rawGroupPart){
         String[] adminPart = rawAdminPart.split("");
         String[] groupPart = rawGroupPart.split("");
         StringBuilder result = new StringBuilder();
