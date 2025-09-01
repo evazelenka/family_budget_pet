@@ -14,7 +14,11 @@ public class AuthService {
         this.groupService = groupService;
     }
 
-    public boolean registerUser (User user, String mode, String groupToken){
+//    public boolean registerUser (User user, String groupToken){
+//
+//    }
 
+    public boolean registerAdmin(User user){
+        return true;
     }
 }

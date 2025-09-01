@@ -3,6 +3,7 @@ package com.example.family_budget_pet.controllers;
 import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Role;
 import com.example.family_budget_pet.domain.User;
+import com.example.family_budget_pet.service.AuthService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -21,10 +22,12 @@ public class AuthController {
 
     private final UserService userService;
     private  final GroupService groupService;
+    private final AuthService authService;
 
-    public AuthController(UserService userService, GroupService groupService) {
+    public AuthController(UserService userService, GroupService groupService, AuthService authService) {
         this.userService = userService;
         this.groupService = groupService;
+        this.authService = authService;
     }
 
     @GetMapping("/login")
@@ -44,9 +47,9 @@ public class AuthController {
             model.addAttribute("error", "Неверное имя пользователя или пароль!");
             return "auth/login";
         }
-
         httpSession.setAttribute("loggedUser", user);
-
+        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+        if (isAdmin) return "redirect:admin/dashboard";
         return "redirect:user/dashboard";
     }
 
@@ -72,12 +75,13 @@ public class AuthController {
             Model model
     ) {
         if (bindingResult.hasErrors()) {
-            return "register"; // возвращаем форму с сообщениями об ошибках
+            return "auth/register"; // возвращаем форму с сообщениями об ошибках
         }
 
         try {
             if ("admin".equals(mode)) {
-                userService.save(user, mode);
+                userService.save(user, "admin");
+//                authService.registerAdmin(user);
             } else if ("member".equals(mode) && groupToken.startsWith("token")) {
                 Group group = groupService.findByToken(groupToken);
                 if (group == null) {
@@ -87,13 +91,14 @@ public class AuthController {
                 group.addUser(user);
                 userService.save(user, mode);
                 groupService.save(group);
+//                authService.registerUser(user, groupToken);
             }
         } catch (Exception e) {
             model.addAttribute("error", "Ошибка регистрации: " + e.getMessage());
             return "auth/register";
         }
 
-        return "redirect:/login";
+        return "redirect:auth/login";
     }
 }
 

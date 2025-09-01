@@ -11,3 +11,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+#  web:
+#    resources:
+#      static-locations=classpath:/resources/static/

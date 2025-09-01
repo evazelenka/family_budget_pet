@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: content">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title} ?: 'Family Budget'"></title>
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+<header>
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
+        <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+        <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
+    </nav>
+</header>
 <h2>Статистика</h2>
 
 <h3>Текущий месяц</h3>

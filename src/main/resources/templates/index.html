@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: content">
-<head><meta charset="UTF-8">
-    <title th:text="${title} ?: 'Family Budget'"></title>
-    <link rel="stylesheet" href="/static/css/style.css"></head>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
+<header>
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
+        <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+        <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
+    </nav>
+</header>
 <div class="centered">
     <h1>Добро пожаловать в Family Budget</h1>
-    <a class="btn" th:href="@{/register}">Регистрация</a>
-    <a class="btn" th:href="@{/login}">Вход</a>
+    <a class="btn" th:href="@{/auth/register}">Регистрация</a>
+    <a class="btn" th:href="@{/auth/login}">Вход</a>
 </div>
 </body>
 </html>
