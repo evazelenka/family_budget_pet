@@ -11,6 +11,24 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  server:
+    address: 0.0.0.0
+    port: 8080
+#  sql:
+#    init:
+#      mode: always
 #  web:
 #    resources:
 #      static-locations=classpath:/resources/static/
+
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/your_db_name
+#    username: your_db_username
+#    password: your_db_password
+#  jpa:
+#    hibernate:
+#      ddl-auto: create       # пересоздавать таблицы при старте
+#    show-sql: true           # вывод SQL-запросов в консоль
+#  datasource:
+#    initialization-mode: always  # выполнять data.sql при старте

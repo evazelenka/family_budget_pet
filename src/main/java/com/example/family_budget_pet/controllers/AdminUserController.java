@@ -26,6 +26,7 @@ public class AdminUserController {
         User admin = userService.findByUsername(principal.getUsername());
         Long adminId = admin.getId();
         model.addAttribute("users", userService.findByAdminGroupId(adminId));
+//        model.addAttribute("userRole", "user");
         return "admin/users";
     }
 
@@ -45,19 +46,15 @@ public class AdminUserController {
     public String groupPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
         Group group = groupService.findByAdminId(admin.getId());
-        String currentToken;
-        String groupName;
-        if (group == null){
-            currentToken = "notoken";
-            groupName = "nogroup";
-        }
-        else {
-            currentToken = group.getToken();
-            groupName = group.getGroupName();
-        }
-        model.addAttribute("groupToken", currentToken);
-        model.addAttribute("groupName", groupName);
+        model.addAttribute("group", group);
         return "admin/group";
     }
 
+    @PostMapping("/group/create")
+    public String createNewGroup(@RequestParam String groupName, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User admin = userService.findByUsername(principal.getUsername());
+        Group group = groupService.save(groupName, admin);
+        model.addAttribute("group", group);
+        return "admin/group";
+    }
 }

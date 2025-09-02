@@ -48,8 +48,4 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Set<Group> groups = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "admin_group_id")
-    private Group adminOfGroup;
 }

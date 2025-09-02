@@ -2,7 +2,6 @@ package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.User;
-import com.example.family_budget_pet.service.AuthService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -18,12 +17,10 @@ public class AuthController {
 
     private final UserService userService;
     private  final GroupService groupService;
-    private final AuthService authService;
 
-    public AuthController(UserService userService, GroupService groupService, AuthService authService) {
+    public AuthController(UserService userService, GroupService groupService) {
         this.userService = userService;
         this.groupService = groupService;
-        this.authService = authService;
     }
 
     @GetMapping("/login")
@@ -31,23 +28,6 @@ public class AuthController {
         model.addAttribute("title", "Вход");
         return "auth/login";
     }
-//
-//    @PostMapping("/login")
-//    public String loginUser(@RequestParam String username,
-//                            @RequestParam String password,
-//                            Model model,
-//                            HttpSession httpSession){
-//        User user = userService.findByUsername(username);
-//        if (user == null || !user.getPassword().equals(password)){
-//            model.addAttribute("title", "Вход");
-//            model.addAttribute("error", "Неверное имя пользователя или пароль!");
-//            return "auth/login";
-//        }
-//        httpSession.setAttribute("loggedUser", user);
-//        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
-//        if (isAdmin) return "redirect:admin/dashboard";
-//        return "redirect:user/dashboard";
-//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession){
@@ -76,18 +56,15 @@ public class AuthController {
 
         try {
             if ("admin".equals(mode)) {
-                userService.save(user, "admin");
-//                authService.registerAdmin(user);
+                userService.register(user, mode);
             } else if ("member".equals(mode) && groupToken.startsWith("token")) {
                 Group group = groupService.findByToken(groupToken);
                 if (group == null) {
                     model.addAttribute("error", "Группа с таким токеном не найдена!");
                     return "auth/register";
                 }
-                group.addUser(user);
-                userService.save(user, mode);
-                groupService.save(group);
-//                authService.registerUser(user, groupToken);
+                userService.register(user, mode);
+                groupService.addUser(group, user);
             }
         } catch (Exception e) {
             model.addAttribute("error", "Ошибка регистрации: " + e.getMessage());

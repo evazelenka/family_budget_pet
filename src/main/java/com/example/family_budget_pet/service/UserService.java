@@ -6,11 +6,11 @@ import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.repository.GroupRepository;
 import com.example.family_budget_pet.repository.RoleRepository;
 import com.example.family_budget_pet.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,13 +27,13 @@ public class UserService {
     private final GroupRepository groupRepository;
     private final PasswordEncoder passwordEncoder; // например BCryptPasswordEncoder
 
-    public User save(User user, String mode){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        log.info("Шифруем пароль");
-        log.info("");
-        user.getRoles().addAll(getRoles(mode));
-        return userRepository.save(user);
-    }
+//    @Transactional
+//    public User save(User user, String mode){
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.getRoles().addAll(getRoles(mode));
+//        User u = userRepository.save(user);
+//        return u;
+//    }
 
     public User findByUsername(String username){
         return userRepository.findByUsername(username).orElse(null);
@@ -58,31 +58,26 @@ public class UserService {
         return users;
     }
 
-//    @Transactional
-//    public User register(User user) {
-//        // Шифруем пароль
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//
-//        // Определяем роль
-//        String roleName = (user.getUsername().endsWith("8545") && user.getPassword().endsWith("8545"))
-//                ? "ROLE_ADMIN" : "ROLE_USER";
-//
-//        Set<Role> roles = new HashSet<>();
-//        Role role = roleRepository.findByName(roleName)
-//                .orElseThrow(() -> new RuntimeException(roleName + " not found"));
-//        roles.add(role);
-//        user.getRoles().addAll(roles);
-//
-//        return userRepository.save(user);
-//    }
+    @Transactional
+    public User register(User user, String mode) {
+        // Шифруем пароль
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-    private Set<Role> getRoles(String mode){
-        Set<Role> roles = new HashSet<>();
+        // Определяем роль
         String roleName = (mode.equals("admin"))
                 ? "ROLE_ADMIN" : "ROLE_USER";
+
+        Set<Role> roles = new HashSet<>();
         Role role = roleRepository.findByName(roleName).orElse(null);
-        log.info(roleName + " роль пользователя");
+
         roles.add(role);
-        return roles;
+        user.getRoles().addAll(roles);
+        return userRepository.save(user);
     }
+//
+//    private Set<Role> getRoles(String mode){
+//
+//
+//        return roles;
+//    }
 }

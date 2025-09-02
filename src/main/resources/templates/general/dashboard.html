@@ -26,6 +26,13 @@
             <a th:href="@{/admin/group}">Семейный учет</a>
         </span>
 
+        <!-- Блок для READER -->
+        <span sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/dashboard}">Админ панель</a>
+            <a th:href="@{/admin/users}">Управление пользователями</a>
+            <a th:href="@{/admin/group}">Семейный учет</a>
+        </span>
+
         <!-- Авторизация -->
         <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
         <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>

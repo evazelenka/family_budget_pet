@@ -34,16 +34,24 @@
         <td th:text="${u.id}"></td>
         <td th:text="${u.username}"></td>
         <td th:text="${u.email}"></td>
-        <td th:text="${u.role}"></td>
-        <td>
-            <form th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">
-                <select name="role">
-                    <option th:value="ROLE_USER" th:selected="${u.role.name() == 'ROLE_USER'}">USER</option>
-                    <option th:value="ROLE_ADMIN" th:selected="${u.role.name() == 'ROLE_ADMIN'}">ADMIN</option>
-                </select>
-                <button type="submit">Сохранить</button>
-            </form>
-        </td>
+<!--        <td>-->
+<!--            <span th:each="r : ${u.roles}" th:text="${r.name}" th:append=", "></span>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <form th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">-->
+<!--                <select name="role">-->
+<!--                    <option th:value="ROLE_USER"-->
+<!--                            th:selected="${u.roles.?[name == 'ROLE_USER'].size() > 0}">-->
+<!--                        USER-->
+<!--                    </option>-->
+<!--                    <option th:value="ROLE_ADMIN"-->
+<!--                            th:selected="${u.roles.?[name == 'ROLE_ADMIN'].size() > 0}">-->
+<!--                        ADMIN-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--                <button type="submit">Сохранить</button>-->
+<!--            </form>-->
+<!--        </td>-->
     </tr>
     </tbody>
 </table>
