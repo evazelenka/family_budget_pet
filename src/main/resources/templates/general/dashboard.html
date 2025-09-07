@@ -1,57 +1,46 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<header>
-    <nav>
-
-        <a th:href="@{/}">Главная</a>
-
-        <!-- Блок для USER -->
-        <span sec:authorize="hasRole('USER')">
-            <a th:href="@{/budget}">Мой бюджет</a>
-            <a th:href="@{/transactions}">Мои транзакции</a>
-            <a th:href="@{/statistics}">Статистика</a>
-        </span>
-
-        <!-- Блок для ADMIN -->
-        <span sec:authorize="hasRole('ADMIN')">
-            <a th:href="@{/admin/dashboard}">Админ панель</a>
-            <a th:href="@{/admin/users}">Управление пользователями</a>
-            <a th:href="@{/admin/group}">Семейный учет</a>
-        </span>
-
-        <!-- Блок для READER -->
-        <span sec:authorize="hasRole('ADMIN')">
-            <a th:href="@{/admin/dashboard}">Админ панель</a>
-            <a th:href="@{/admin/users}">Управление пользователями</a>
-            <a th:href="@{/admin/group}">Семейный учет</a>
-        </span>
-
-        <!-- Авторизация -->
-        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
-        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
-    </nav>
-</header>
-
-<main>
-    <!-- Контент для USER -->
-    <div sec:authorize="hasRole('USER')">
-        <h2>Мой бюджет</h2>
-        <p>Здесь отображаются ваши транзакции и статистика.</p>
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/family/welcome}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
-    <!-- Контент для ADMIN -->
-    <div sec:authorize="hasRole('ADMIN')">
-        <h2>Админ панель</h2>
-<!--        <a class="btn" th:href="@{/admin/users}">Управление пользователями</a>-->
-<!--        <a class="btn" th:href="@{/admin/group}">Семейный учет</a>-->
-    </div>
-</main>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

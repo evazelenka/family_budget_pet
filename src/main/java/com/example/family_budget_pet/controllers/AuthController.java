@@ -42,6 +42,14 @@ public class AuthController {
         return "auth/register"; // имя Thymeleaf шаблона
     }
 
+    @GetMapping("/register/new")
+    public String showRegistrationFormAndLogOut(Model model, HttpSession httpSession) {
+        httpSession.invalidate();
+        model.addAttribute("user", new User());
+        model.addAttribute("title", "Регистрация");
+        return "auth/register"; // имя Thymeleaf шаблона
+    }
+
     @PostMapping("/register")
     public String registerUser(
             @Valid @ModelAttribute("user") User user,

@@ -1,27 +1,64 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<body>
-<header>
-    <nav>
-        <a th:href="@{/family/welcome}">Главная</a>
-        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
-        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
-        <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
-        <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
-        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
-        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
-    </nav>
-</header>
-<div class="centered">
-    <h1>Добро пожаловать в Family Budget</h1>
-    <a class="btn" th:href="@{/auth/register}">Регистрация</a>
-    <a class="btn" th:href="@{/auth/login}">Вход</a>
-</div>
+<body class="bg-dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/family/welcome}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/family/about}">О проекте</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/auth/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="d-flex justify-content-center align-items-center vh-100 text-white">
+    <div class="text-secondary py-5 px-4 text-center">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">
+                KittyCash
+            </h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="fs-5 mb-4">
+                    Kitty Cash — умный и простой контроль бюджета 🐾💰
+                    Управляй личными финансами или создавай общий бюджет вместе с близкими.
+                    Kitty Cash помогает держать финансы под контролем.
+                    Так вы всегда будете знать, куда уходят деньги и как распределяется бюджет семьи или команды.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <button th:onclick="|location.href='@{/auth/login}'|" type="button" class="btn btn-light btn-lg px-4 me-sm-3 fw-bold">
+                        Вход
+                    </button>
+
+                    <button th:onclick="|location.href='@{/auth/register}'|" type="button" class="btn btn-outline-light btn-lg px-4">
+                        Регистрация
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,69 +1,104 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<body>
-<header>
-    <nav>
-        <a th:href="@{/}">Главная</a>
-        <a th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
-        <a th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
-        <a th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
-        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
-        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Войти</a>
-    </nav>
-</header>
-<h2>Регистрация</h2>
+<body class="bg-dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/family/welcome}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/family/about}">О проекте</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Мои транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Админка</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<form th:action="@{/auth/register}" th:object="${user}" method="post">
-    <!-- Имя пользователя -->
-    <label>Имя пользователя:
-        <input type="text" th:field="*{username}" required>
-    </label>
-    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br>
+<main class="d-flex justify-content-center align-items-center vh-100 text-white">
+    <div class="w-100" style="max-width: 400px;">
+        <h1 class="h3 mb-3 fw-bold text-white">Регистрация</h1>
+        <!-- Форма для неавторизованных пользователей -->
+        <form sec:authorize="!isAuthenticated()"  th:action="@{/auth/register}" th:object="${user}" method="post">
+            <div class="form-floating mb-3">
+                <input id="floatingInput" class="form-control" type="text" th:field="*{username}" required>
+                <label for="floatingInput">Имя пользователя</label>
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br>
+            </div>
+            <div class="form-floating mb-3">
+                <input id="floatingInputEmail" class="form-control" type="email" th:field="*{email}" required>
+                <label for="floatingInputEmail">Email</label>
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div><br>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" name="password" class="form-control" id="floatingPassword1" th:field="*{password}" required>
+                <label for="floatingPassword1">Пароль</label>
+                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br>
+            </div>
+            <label>
+                <input type="radio" name="mode" value="admin" checked> Создать новую группу (Админ)
+            </label><br>
+            <label>
+                <input type="radio" name="mode" value="member"> Присоедениться к существующей группе по токену
+            </label><br>
+            <input type="text" class="form-control" name="groupToken" placeholder="Введите токен" disabled><br><br>
 
-    <!-- Email -->
-    <label>Email:
-        <input type="email" th:field="*{email}" required>
-    </label>
-    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div><br>
+            <button type="submit" class="btn btn-primary w-100 py-2">Зарегистрироваться</button>
+        </form>
 
-    <!-- Пароль -->
-    <label>Пароль:
-        <input type="password" th:field="*{password}" required>
-    </label>
-    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br>
+        <script>
+            // Включение/выключение поля "токен"
+            document.querySelectorAll('input[name="mode"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelector('input[name="groupToken"]').disabled = this.value !== 'member';
+                });
+            });
+        </script>
 
-    <!-- Выбор режима -->
-    <label>
-        <input type="radio" name="mode" value="admin" checked> Создать новую группу (Админ)
-    </label><br>
-    <label>
-        <input type="radio" name="mode" value="member"> Присоедениться к существующей группе по токену
-    </label><br>
-
-    <!-- Токен группы -->
-    <input type="text" name="groupToken" placeholder="Введите токен" disabled><br><br>
-
-    <button type="submit">Зарегистрироваться</button>
-</form>
-
-<script>
-    // Включение/выключение поля "токен"
-    document.querySelectorAll('input[name="mode"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.querySelector('input[name="groupToken"]').disabled = this.value !== 'member';
-        });
-    });
-</script>
-
-<!-- Ошибки общего характера -->
-<div th:if="${error}">
-    <p class="error" th:text="${error}"></p>
-</div>
+        <!-- Ошибки общего характера -->
+        <div th:if="${error}">
+            <p class="error" th:text="${error}"></p>
+        </div>
+        <!-- Сообщение для авторизованных пользователей -->
+        <div sec:authorize="isAuthenticated()" class="text-center py-5">
+            <h3 class="display-5 fw-bold">Вы уже зарегестрированы!</h3>
+            <button th:onclick="|location.href='@{/auth/register/new}'|" type="button" class="btn btn-light btn-lg px-4 me-sm-3 fw-bold">
+                Новый аккаунт
+            </button>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
+
