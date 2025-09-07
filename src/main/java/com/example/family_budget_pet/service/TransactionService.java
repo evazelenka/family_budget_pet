@@ -21,4 +21,5 @@ public class TransactionService {
                                     LocalDateTime endDate){
         return repository.findAll(TransactionSpecification.filter(amount, categoryId, userId, startDate, endDate));
     }
+
 }
