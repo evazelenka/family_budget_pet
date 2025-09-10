@@ -47,9 +47,9 @@
 
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
     <div class="w-100" style="max-width: 400px;">
-        <h1 class="h3 mb-3 fw-bold text-white">Вход</h1>
         <!-- Форма для неавторизованных пользователей -->
         <form sec:authorize="!isAuthenticated()" th:action="@{/auth/login}" method="post">
+            <h1 class="h3 mb-3 fw-bold text-white">Вход</h1>
             <div class="form-floating mb-3">
                 <input id="floatingInput" type="text" class="form-control" name="username">
                 <label for="floatingInput">Имя пользователя</label>

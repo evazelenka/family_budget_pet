@@ -4,6 +4,8 @@ import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Role;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
+import com.example.family_budget_pet.domain.enums.CategoryType;
+import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
@@ -27,6 +29,7 @@ public class AdminUserController {
     private final UserService userService;
     private final GroupService groupService;
     private final TransactionService tService;
+    private final CategoryService cService;
 
     @GetMapping("/transactions")
     public String showAllTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
@@ -52,8 +55,38 @@ public class AdminUserController {
     }
 
     @GetMapping("/dashboard")
-    public String adminPage(Model model){
+    public String adminPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User admin = userService.findByUsername(principal.getUsername());
+        String role = "user";
+        String groupName = null;
+        Set<Role> roles = admin.getRoles();
+        for (Role role1 : roles) {
+            if (role1.getName().equals("ROLE_ADMIN")){
+                role = "admin";
+                break;
+            }
+            if (role1.getName().equals("ROLE_READER")){
+                role = "reader";
+                break;
+            }
+        }
+        Set<Group> groups = admin.getGroups();
+        if (!groups.isEmpty()){
+            groupName = groups.stream().toList().get(0).getGroupName();
+        }
+
+        Long incomeId = cService.findByType(CategoryType.INCOME).getId();
+        Long expenseId = cService.findByType(CategoryType.EXPENSE).getId();
+
+
+
         model.addAttribute("title", "Админка");
+        model.addAttribute("user", admin);
+        model.addAttribute("role", role);
+        model.addAttribute("groupName", groupName);
+        model.addAttribute("income", "Админка");
+        model.addAttribute("expense", "Админка");
+
         return "general/dashboard.html";
     }
 
