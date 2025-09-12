@@ -10,7 +10,7 @@
 <body class="bg-dark">
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/kitty-cash/welcome}">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
             <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
             KittyCash
         </a>
@@ -24,23 +24,24 @@
                 </li>
                 <!--                Ридер-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reader/transactions}">Транзакции</a>
+                    <a class="nav-link" th:href="@{/reader/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reader/info}">Профиль</a>
+                    <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/reader/users}">Группа</a>
+                    <a class="nav-link active" th:href="@{/reader/users}" sec:authorize="hasRole('READER')">Группа</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/api/stats/reder}">Статистика</a>
+                    <a class="nav-link" th:href="@{/reader/stats}" sec:authorize="hasRole('READER')">Статистика</a>
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/family/about}">О проекте</a>
+                    <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                    <a class="nav-link" th:href="@{/auth/logout}" sec:authorize="isAuthenticated()">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -83,10 +84,10 @@
 
             <!-- Блок, если группы нет -->
             <div th:unless="${group != null}">
-                <form th:action="@{/admin/group/create}" method="post">
-                    <label for="groupName">Название группы:</label>
-                    <input type="text" id="groupName" name="groupName" required>
-                    <button type="submit">Создать новую группу</button>
+                <form th:action="@{/reader/group/join}" method="post">
+                    <label for="groupToken">Токен группы:</label>
+                    <input type="text" id="groupToken" name="groupToken" required>
+                    <button type="submit">Подключиться по токену</button>
                 </form>
             </div>
         </div>

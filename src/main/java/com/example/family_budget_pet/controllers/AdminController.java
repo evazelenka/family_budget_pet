@@ -5,7 +5,6 @@ import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,7 +48,7 @@ public class AdminController {
     }
 
     @PostMapping("/users/{id}/role")
-    public String changeRole(@PathVariable Long id, @RequestParam Role role){
+    public String changeRole(@PathVariable Long id, @RequestParam String role){
         userService.updateRole(id, role);
         return "redirect:/admin/users";
     }

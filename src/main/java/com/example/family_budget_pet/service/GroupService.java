@@ -6,6 +6,7 @@ import com.example.family_budget_pet.repository.GroupRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -57,5 +58,9 @@ public class GroupService {
 
     public void deleteGroup(Group group){
         groupRepository.delete(group);
+    }
+
+    public List<Group> findByUserId(Long userId){
+        return groupRepository.findByUserId(userId);
     }
 }

@@ -43,11 +43,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateRole(Long userId, Role newRole){
+    @Transactional
+    public User updateRole(Long userId, String newRole){
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
         Set<Role> roles = new HashSet<>();
-        roles.add(newRole);
-        user.getRoles().addAll(roles);
+        Role role = roleRepository.findByName(newRole).orElse(null);
+        if (role != null && (newRole.equals("ROLE_READER") || newRole.equals("ROLE_USER")) ) {
+            roles.add(role);
+            user.setRoles(roles);
+        }else if (role != null){
+            roles.add(role);
+            user.getRoles().addAll(roles);
+        }
         return userRepository.save(user);
     }
 
