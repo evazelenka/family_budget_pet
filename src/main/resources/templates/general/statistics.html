@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="bg-dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/family/welcome}">Главная</a>
+                </li>
+                <!--                Админ-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Статистика</a>
+                </li>
+
+                <!--                Юзер-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('USER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+                </li>
+
+                <!--                Ридер-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Статистика</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/family/about}">О проекте</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="d-flex justify-content-center align-items-center vh-100 text-white">
+    <div sec:authorize="hasRole('ADMIN')" style="max-width: 1200px;" class="w-100 accordion" id="accordionExample">
+        <h2 class="text-center fw-bold text-white">
+            Админ
+        </h2>
+        <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Создание группы и администрирование пользователей
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>Администрирование.</strong> Регистрируясь в приложении как администратор, у пользователя появляется возможность создать группу для отслеживания чужих транзакций и планирования бюджета на основе общей статистики группы. При создании группы генерируется токен, его необходимо передать юзерам. Они используют его при регистрации.<br>
+                    При необходимости пользователя можно назначить ридером(читателем) для предоставления ему статистики по группе, но только для чтения. <br>Также администратор может не создавать группу и вести личный учет расходов и доходов.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Добавление и редактирование транзакций
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>Транзакции.</strong> Администратор может отслеживать общие расходы и доходы(если есть группа), а также свои собственные. Транзакции других пользователей администратор может изменять:
+                    редактировать описание и категорию.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Просмотр статистики
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>Статистика.</strong> Для админа доступна общая статистика(по группе) и личная.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div sec:authorize="hasRole('READER')" style="max-width: 1200px;" class="w-100 accordion" id="accordionExample2">
+        <h2 class="text-center fw-bold text-white">
+            Ридер
+        </h2>
+        <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
+                    Главные особенности супер-пользователя
+                </button>
+            </h2>
+            <div id="collapseOne2" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">
+                <div class="accordion-body">
+                    <strong>Доступ к данным пользователей.</strong> Ридер(или читатель) имеет полный доступ к информации о пользователях в группе, статистике и транзакциям, НО только для чтения. Это позволяет вести безопасную аналитику доходов и расходов, без внесения изменений.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                    Добавление и редактирование транзакций
+                </button>
+            </h2>
+            <div id="collapseTwo2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                <div class="accordion-body">
+                    <strong>Транзакции.</strong> Ридер имеет доступ к просмотру транзакций пользователей в группе, без реадктирования. Также, он может вести учет своих личных транзакций, при желании. Личные транзакции также отобразятся в статистике группы.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                    Просмотр статистики
+                </button>
+            </h2>
+            <div id="collapseThree2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                <div class="accordion-body">
+                    <strong>Статистика.</strong> Для ридера доступна общая статистика(по группе) и личная.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div sec:authorize="hasRole('USER')" style="max-width: 1200px;" class="w-100 accordion" id="accordionExample3">
+        <h2 class="text-center fw-bold text-white">
+            Пользователь
+        </h2>
+        <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
+                    Мои возможности
+                </button>
+            </h2>
+            <div id="collapseOne3" class="accordion-collapse collapse show" data-bs-parent="#accordionExample3">
+                <div class="accordion-body">
+                    <strong>Личные данные.</strong> Для пользователя доступны только его личные данные: транзакции и статистика по ним. Он может редактировать, удалять, добавлять и фильтровать их.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">
+                    Добавление и редактирование транзакций
+                </button>
+            </h2>
+            <div id="collapseTwo3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
+                <div class="accordion-body">
+                    <strong>Транзакции.</strong> Внимательно добавляйте и редактируйте транзакции. Обновляйте свои расходы и доходы регулярно, тогда статистика будет более точной.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                    Просмотр статистики
+                </button>
+            </h2>
+            <div id="collapseThree3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
+                <div class="accordion-body">
+                    <strong>Статистика.</strong> Для юзера доступна только личная статистика по транзакциям.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

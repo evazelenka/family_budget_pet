@@ -73,6 +73,8 @@ public class AuthController {
                 }
                 userService.register(user, mode);
                 groupService.addUser(group, user);
+            } else if ("just-user".equals(mode)){
+                userService.register(user, mode);
             }
         } catch (Exception e) {
             model.addAttribute("error", "Ошибка регистрации: " + e.getMessage());

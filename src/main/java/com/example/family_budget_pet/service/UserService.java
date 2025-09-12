@@ -74,10 +74,14 @@ public class UserService {
         user.getRoles().addAll(roles);
         return userRepository.save(user);
     }
-//
-//    private Set<Role> getRoles(String mode){
-//
-//
-//        return roles;
-//    }
+
+    @Transactional
+    public void deleteGroup(Long adminId){
+        User user = userRepository.findById(adminId).orElse(null);
+        Group group = groupRepository.findByAdmin_Id(adminId).orElse(null);
+        if (user != null && group != null){
+            user.setGroups(new HashSet<>());
+            groupRepository.delete(group);
+        }
+    }
 }

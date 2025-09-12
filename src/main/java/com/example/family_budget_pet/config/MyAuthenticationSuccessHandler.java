@@ -25,7 +25,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                redirectUrl = "/admin/dashboard";
+                redirectUrl = "/admin/info";
                 break;
             }
         }

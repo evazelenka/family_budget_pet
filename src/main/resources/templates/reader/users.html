@@ -22,18 +22,18 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" th:href="@{/kitty-cash/welcome}">Главная</a>
                 </li>
-                <!--                Админ-->
+                <!--                Ридер-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/transactions}">Транзакции</a>
+                    <a class="nav-link" th:href="@{/reader/transactions}">Транзакции</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/dashboard}">Профиль</a>
+                    <a class="nav-link" th:href="@{/reader/info}">Профиль</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/dashboard}">Группа</a>
+                    <a class="nav-link active" th:href="@{/reader/users}">Группа</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/dashboard}">Статистика</a>
+                    <a class="nav-link" th:href="@{/api/stats/reder}">Статистика</a>
                 </li>
 
                 <li class="nav-item">
@@ -56,7 +56,6 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Email</th>
                 <th scope="col">Роль</th>
-                <th scope="col">Действие</th>
             </tr>
             </thead>
             <tbody>
@@ -69,21 +68,6 @@
                           th:each="role : ${u.roles}"
                           th:text="${role.name}" class="badge bg-primary me-1">ROLE_USER</span>
                 </td>
-                <td>
-                    <form th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">
-                                <select name="role">
-                                    <option th:value="ROLE_USER"
-                                            th:selected="${u.roles.?[name == 'ROLE_USER'].size() > 0}">
-                                        USER
-                                    </option>
-                                    <option th:value="ROLE_READER"
-                                            th:selected="${u.roles.?[name == 'ROLE_READER'].size() > 0}">
-                                        READER
-                                    </option>
-                                </select>
-                                <button type="submit">Сохранить</button>
-                            </form>
-                        </td>
             </tr>
             </tbody>
         </table>
@@ -95,10 +79,6 @@
             <div th:if="${group != null}">
                 <p>Ваша группа: <strong th:text="${group.groupName}"></strong></p>
                 <p>Ваш токен для подключения: <strong th:text="${group.token}"></strong></p>
-
-                <form th:action="@{/admin/group/delete}" method="post">
-                    <button type="submit">Удалить группу</button>
-                </form>
             </div>
 
             <!-- Блок, если группы нет -->

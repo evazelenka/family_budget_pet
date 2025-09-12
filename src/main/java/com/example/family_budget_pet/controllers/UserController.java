@@ -16,6 +16,6 @@ public class UserController {
     @GetMapping("/dashboard")
     public String userPage(Model model){
         model.addAttribute("title", "Профиль");
-        return "general/dashboard.html";
+        return "general/info.html";
     }
 }

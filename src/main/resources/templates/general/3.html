@@ -89,7 +89,7 @@
             <div class="card bg-secondary text-white p-3" style="min-width: 300px;">
                 <h5 class="card-title">Информация о пользователе</h5>
                 <p><strong>Роль:</strong> <span th:text="${role}">USER</span></p>
-                <p><strong>Имя:</strong> <span th:text="${user.name}">Иван</span></p>
+                <p><strong>Имя:</strong> <span th:text="${user.username}">Иван</span></p>
                 <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
                 <p><strong>Группа:</strong> <span th:text="${groupName}">-</span></p>
             </div>
@@ -157,17 +157,20 @@
         <!-- Правая колонка: добавить транзакцию -->
         <div class="col-md-4 mb-3">
             <div class="card bg-secondary text-white p-3 h-100">
-                <h5 class="card-title">Добавить транзакцию</h5>
-                <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-100">
+                <h5 class="card-title">Добавить транзакцию(доход)</h5>
+                <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-100"
+                th:object="${transaction}">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Сумма</label>
-                        <input type="number" id="amount" name="amount" class="form-control">
+                        <input type="number" id="amount" name="amount" class="form-control"
+                        th:field="*{amount}">
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Тип</label>
                         <select id="type" name="type" class="form-select">
-                            <option value="income">Доход</option>
-                            <option value="expense">Расход</option>
+                            <option value="salary">Зарплата</option>
+                            <option value="debt_back">Возврат долгов</option>
+                            <option value="passive">Пассивный доход</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -176,8 +179,58 @@
                     </div>
                     <button type="submit" class="btn btn-light mt-auto">Добавить</button>
                 </form>
+                <h5 class="card-title">Добавить транзакцию(расход)</h5>
+                <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-100"
+                      th:object="${transaction}">
+                    <div class="mb-3">
+                        <label for="amount2" class="form-label">Сумма</label>
+                        <input type="number" id="amount2" name="amount" class="form-control"
+                               th:field="*{amount}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="type2" class="form-label">Тип</label>
+                        <select id="type2" name="type" class="form-select">
+                            <option value="home">Дом</option>
+                            <option value="health">Здоровье</option>
+                            <option value="food">Еда</option>
+
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description2" class="form-label">Описание</label>
+                        <input type="text" id="description2" name="description" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-light mt-auto">Добавить</button>
+                </form>
             </div>
         </div>
+<!--        <div class="col-md-4 mb-3">-->
+<!--            <div class="card bg-secondary text-white p-3 h-100">-->
+<!--                <h5 class="card-title">Добавить транзакцию(расход)</h5>-->
+<!--                <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-100"-->
+<!--                      th:object="${transaction}">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="amount2" class="form-label">Сумма</label>-->
+<!--                        <input type="number" id="amount2" name="amount" class="form-control"-->
+<!--                               th:field="*{amount}">-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="type2" class="form-label">Тип</label>-->
+<!--                        <select id="type2" name="type" class="form-select">-->
+<!--                            <option value="home">Дом</option>-->
+<!--                            <option value="health">Здоровье</option>-->
+<!--                            <option value="food">Еда</option>-->
+
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="description2" class="form-label">Описание</label>-->
+<!--                        <input type="text" id="description2" name="description" class="form-control">-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn btn-light mt-auto">Добавить</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </main>
 

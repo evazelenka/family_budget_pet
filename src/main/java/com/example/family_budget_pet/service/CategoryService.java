@@ -14,8 +14,16 @@ public class CategoryService {
 
     private final CategoryRepository repository;
 
-    public Category findByType(CategoryType type){
-        return repository.findByType(type);
+    public List<Category> findAllByType(CategoryType type){
+        return repository.findAllByType(type);
+    }
+
+    public Category findByName(String name){
+        return repository.findByName(name);
+    }
+
+    public Category save(Category category){
+        return repository.save(category);
     }
 
 }

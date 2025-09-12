@@ -1,14 +1,11 @@
 package com.example.family_budget_pet.controllers;
 
-import com.example.family_budget_pet.domain.Group;
-import com.example.family_budget_pet.domain.Role;
-import com.example.family_budget_pet.domain.Transaction;
-import com.example.family_budget_pet.domain.User;
-import com.example.family_budget_pet.domain.enums.CategoryType;
+import com.example.family_budget_pet.domain.*;
 import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,14 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @AllArgsConstructor
-public class AdminUserController {
+public class AdminController {
 
     private final UserService userService;
     private final GroupService groupService;
@@ -43,8 +39,12 @@ public class AdminUserController {
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
         Long adminId = admin.getId();
-        model.addAttribute("users", userService.findByAdminGroupId(adminId));
-//        model.addAttribute("userRole", "user");
+        Group group = groupService.findByAdminId(adminId);
+        if (group != null){
+            model.addAttribute("users", userService.findByAdminGroupId(adminId));
+            model.addAttribute("group", group);
+        }
+        model.addAttribute("title", "Группа");
         return "admin/users";
     }
 
@@ -54,40 +54,10 @@ public class AdminUserController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping("/info")
     public String adminPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-        User admin = userService.findByUsername(principal.getUsername());
-        String role = "user";
-        String groupName = null;
-        Set<Role> roles = admin.getRoles();
-        for (Role role1 : roles) {
-            if (role1.getName().equals("ROLE_ADMIN")){
-                role = "admin";
-                break;
-            }
-            if (role1.getName().equals("ROLE_READER")){
-                role = "reader";
-                break;
-            }
-        }
-        Set<Group> groups = admin.getGroups();
-        if (!groups.isEmpty()){
-            groupName = groups.stream().toList().get(0).getGroupName();
-        }
-
-        Long incomeId = cService.findByType(CategoryType.INCOME).getId();
-        Long expenseId = cService.findByType(CategoryType.EXPENSE).getId();
-
-
-
         model.addAttribute("title", "Админка");
-        model.addAttribute("user", admin);
-        model.addAttribute("role", role);
-        model.addAttribute("groupName", groupName);
-        model.addAttribute("income", "Админка");
-        model.addAttribute("expense", "Админка");
-
-        return "general/dashboard.html";
+        return "general/info.html";
     }
 
     @GetMapping("/group")
@@ -95,7 +65,7 @@ public class AdminUserController {
         User admin = userService.findByUsername(principal.getUsername());
         Group group = groupService.findByAdminId(admin.getId());
         model.addAttribute("group", group);
-        return "admin/group";
+        return "admin/users";
     }
 
     @PostMapping("/group/create")
@@ -103,6 +73,14 @@ public class AdminUserController {
         User admin = userService.findByUsername(principal.getUsername());
         Group group = groupService.save(groupName, admin);
         model.addAttribute("group", group);
-        return "admin/group";
+        return "admin/users";
+    }
+
+
+    @PostMapping("/group/delete")
+    public String deleteGroup(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User admin = userService.findByUsername(principal.getUsername());
+        userService.deleteGroup(admin.getId());
+        return "admin/users";
     }
 }

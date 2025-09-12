@@ -54,4 +54,8 @@ public class GroupService {
         }
         return result.toString();
     }
+
+    public void deleteGroup(Group group){
+        groupRepository.delete(group);
+    }
 }
