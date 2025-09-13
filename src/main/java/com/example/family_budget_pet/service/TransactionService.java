@@ -37,7 +37,7 @@ public class TransactionService {
 //    }
 
     @Transactional
-    public void save(Transaction transaction, String type, String description, String username) {
+    public Transaction save(Transaction transaction, String type, String description, String username) {
         User user = userRepository.findByUsername(username).orElse(null);
         Category c = categoryRepository.findByName(type);
 
@@ -45,7 +45,7 @@ public class TransactionService {
         transaction.setUser(user);
         transaction.setDescription(description);
         transaction.setCategory(c);
-        repository.save(transaction);
+        return repository.save(transaction);
     }
 }
 

@@ -50,7 +50,7 @@
     <!-- Левая часть: таблица -->
     <div class="flex-shrink-0" style="width: 80%; padding-right: 20px;">
         <h2 class="text-center fw-bold text-white">
-            Личные транзакции
+            Транзакции группы
         </h2>
         <table class="table table-dark table-striped">
             <thead>
@@ -60,7 +60,7 @@
                 <th scope="col">Сумма</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Категория</th>
-                <th scope="col">Действие</th>
+                <th scope="col">Пользователь</th>
             </tr>
             </thead>
             <tbody>
@@ -81,54 +81,35 @@
     <div class="flex-grow-1 d-flex justify-content-end align-items-start">
         <div class="card bg-dark text-white shadow-lg" style=" height: 93%; border-radius: 15px; padding: 20px;">
             <button th:onclick="|location.href='@{/auth/register}'|" type="button" class="btn btn-outline-light btn-lg px-4">
-                К транзакциям группы
+                К моим транзакциям
             </button>
             <h2> <br></h2>
-            <h5 class="card-title">Добавить транзакцию(доход)</h5>
+            <h5 class="card-title">Изменить описание</h5>
             <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-80"
                   th:object="${transaction}">
                 <div class="mb-3">
-                    <label for="amount" class="form-label">Сумма</label>
-                    <input type="number" id="amount" name="amount" class="form-control"
-                           th:field="*{amount}">
+                    <label for="id" class="form-label">ID</label>
+                    <input type="number" id="id" name="id" class="form-control"
+                           th:field="*{id}">
                 </div>
-                <div class="mb-3">
-                    <label for="type" class="form-label">Тип</label>
-                    <select id="type" name="type" class="form-select">
-                        <option value="salary">Зарплата</option>
-                        <option value="debt_back">Возврат долгов</option>
-                        <option value="passive">Пассивный доход</option>
-                    </select>
-                </div>
+
                 <div class="mb-3">
                     <label for="description" class="form-label">Описание</label>
                     <input type="text" id="description" name="description" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-light mt-auto">Добавить</button>
+                <button type="submit" class="btn btn-light mt-auto">Изменить</button>
             </form>
             <h2> <br></h2>
-            <h5 class="card-title">Добавить транзакцию(расход)</h5>
+            <h5 class="card-title">Удалить транзакцию пользователя</h5>
             <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-80"
                   th:object="${transaction}">
                 <div class="mb-3">
-                    <label for="amount2" class="form-label">Сумма</label>
-                    <input type="number" id="amount2" name="amount" class="form-control"
-                           th:field="*{amount}">
+                    <label for="id2" class="form-label">ID</label>
+                    <input type="number" id="id2" name="id2" class="form-control"
+                           th:field="*{id2}">
                 </div>
-                <div class="mb-3">
-                    <label for="type2" class="form-label">Тип</label>
-                    <select id="type2" name="type" class="form-select">
-                        <option value="home">Дом</option>
-                        <option value="health">Здоровье</option>
-                        <option value="food">Еда</option>
 
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="description2" class="form-label">Описание</label>
-                    <input type="text" id="description2" name="description" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-light mt-auto">Добавить</button>
+                <button type="submit" class="btn btn-light mt-auto">Удалить</button>
             </form>
 
         </div>

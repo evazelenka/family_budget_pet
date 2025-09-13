@@ -31,6 +31,9 @@ public class AdminController {
         User admin = userService.findByUsername(principal.getUsername());
         Set<User> users = userService.findByAdminGroupId(admin.getId());
         Set<Transaction> transactions = new HashSet<>();
+        if (admin != null && users != null && transactions != null){
+
+        }
         return "/admin/trans";
     }
 
