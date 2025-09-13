@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} ?: 'KittyCash'">KittyCash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="bg-dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/kitty-cash/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/kitty-cash/welcome}">Главная</a>
+                </li>
+                <!--                Админ-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/info}">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/users}">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/stats}">Статистика</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="d-flex vh-100 text-white p-3">
+    <!-- Левая часть: таблица -->
+    <div class="flex-shrink-0" style="width: 50%; padding-right: 20px;">
+        <h2 class="text-center fw-bold text-white">
+            Личные транзакции
+        </h2>
+        <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Email</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.username}"></td>
+                <td th:text="${u.email}"></td>
+                <td>
+                    <span th:if="${u.roles != null}"
+                          th:each="role : ${u.roles}"
+                          th:text="${role.name}" class="badge bg-primary me-1">ROLE_USER</span>
+                </td>
+                <td>
+                    <form th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">
+                        <select name="role">
+                            <option th:value="ROLE_USER"
+                                    th:selected="${u.roles.?[name == 'ROLE_USER'].size() > 0}">
+                                USER
+                            </option>
+                            <option th:value="ROLE_READER"
+                                    th:selected="${u.roles.?[name == 'ROLE_READER'].size() > 0}">
+                                READER
+                            </option>
+                        </select>
+                        <button type="submit">Сохранить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Правая часть: карточка -->
+    <div class="flex-shrink-0" style="width: 50%; ">
+        <h2 class="text-center fw-bold text-white">
+            Транзакции пользователей в группе
+        </h2>
+        <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Email</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.username}"></td>
+                <td th:text="${u.email}"></td>
+                <td>
+                    <span th:if="${u.roles != null}"
+                          th:each="role : ${u.roles}"
+                          th:text="${role.name}" class="badge bg-primary me-1">ROLE_USER</span>
+                </td>
+                <td>
+                    <form th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">
+                        <select name="role">
+                            <option th:value="ROLE_USER"
+                                    th:selected="${u.roles.?[name == 'ROLE_USER'].size() > 0}">
+                                USER
+                            </option>
+                            <option th:value="ROLE_READER"
+                                    th:selected="${u.roles.?[name == 'ROLE_READER'].size() > 0}">
+                                READER
+                            </option>
+                        </select>
+                        <button type="submit">Сохранить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
