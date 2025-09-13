@@ -77,6 +77,9 @@
 <main class="d-flex vh-100 text-white p-3">
     <div class="flex-shrink-0" style="width: 60%; padding-right: 20px; padding-top: 45px">
         <div sec:authorize="hasRole('ADMIN')" class="accordion accordion-bg-dark" id="accordionExample">
+            <h2 class="text-center fw-bold text-white">
+                Админ
+            </h2>
             <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках роли админа.</p>
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -117,6 +120,91 @@
                 </div>
             </div>
         </div>
+        <div sec:authorize="hasRole('READER')" class="accordion" id="accordionExample2">
+            <h2 class="text-center fw-bold text-white">
+                Ридер
+            </h2>
+            <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
+                        Главные особенности супер-пользователя
+                    </button>
+                </h2>
+                <div id="collapseOne2" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <strong>Доступ к данным пользователей.</strong> Ридер(или читатель) имеет полный доступ к информации о пользователях в группе, статистике и транзакциям, НО только для чтения. Это позволяет вести безопасную аналитику доходов и расходов, без внесения изменений.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                        Добавление и редактирование транзакций
+                    </button>
+                </h2>
+                <div id="collapseTwo2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <strong>Транзакции.</strong> Ридер имеет доступ к просмотру транзакций пользователей в группе, без реадктирования. Также, он может вести учет своих личных транзакций, при желании. Личные транзакции также отобразятся в статистике группы.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                        Просмотр статистики
+                    </button>
+                </h2>
+                <div id="collapseThree2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <strong>Статистика.</strong> Для ридера доступна общая статистика(по группе) и личная.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div sec:authorize="hasRole('USER')" class=" accordion" id="accordionExample3">
+            <h2 class="text-center fw-bold text-white">
+                Пользователь
+            </h2>
+            <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
+                        Мои возможности
+                    </button>
+                </h2>
+                <div id="collapseOne3" class="accordion-collapse collapse show" data-bs-parent="#accordionExample3">
+                    <div class="accordion-body">
+                        <strong>Личные данные.</strong> Для пользователя доступны только его личные данные: транзакции и статистика по ним. Он может редактировать, удалять, добавлять и фильтровать их.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">
+                        Добавление и редактирование транзакций
+                    </button>
+                </h2>
+                <div id="collapseTwo3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
+                    <div class="accordion-body">
+                        <strong>Транзакции.</strong> Внимательно добавляйте и редактируйте транзакции. Обновляйте свои расходы и доходы регулярно, тогда статистика будет более точной.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                        Просмотр статистики
+                    </button>
+                </h2>
+                <div id="collapseThree3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
+                    <div class="accordion-body">
+                        <strong>Статистика.</strong> Для юзера доступна только личная статистика по транзакциям.
+                    </div>
+                </div>
+            </div>
+    </div>
     </div>
 
     <div class="flex-grow-1 d-flex justify-content-center align-items-center ">
@@ -126,102 +214,14 @@
         <p><strong>Имя:</strong> <span th:text="${user.username}">Иван</span></p>
         <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
         <p><strong>Группа:</strong> <span th:text="${groupName}">-</span></p>
-        <div th:unless="${groupName != null}">
-            <form th:action="@{/reader/group/join}" method="post">
+        <div sec:authorize="hasRole('USER')" th:unless="${group != null}">
+            <form th:action="@{/user/group/join}" method="post">
                 <label for="groupToken">Токен группы:</label>
                 <input type="text" id="groupToken" name="groupToken" required>
                 <button type="submit">Подключиться по токену</button>
             </form>
         </div>
     </div>
-    </div>
-
-
-
-<!--    <div sec:authorize="hasRole('READER')" style="max-width: 1200px;" class="w-100 accordion" id="accordionExample2">-->
-<!--        <h2 class="text-center fw-bold text-white">-->
-<!--            Ридер-->
-<!--        </h2>-->
-<!--        <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">-->
-<!--                    Главные особенности супер-пользователя-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseOne2" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Доступ к данным пользователей.</strong> Ридер(или читатель) имеет полный доступ к информации о пользователях в группе, статистике и транзакциям, НО только для чтения. Это позволяет вести безопасную аналитику доходов и расходов, без внесения изменений.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">-->
-<!--                    Добавление и редактирование транзакций-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseTwo2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Транзакции.</strong> Ридер имеет доступ к просмотру транзакций пользователей в группе, без реадктирования. Также, он может вести учет своих личных транзакций, при желании. Личные транзакции также отобразятся в статистике группы.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">-->
-<!--                    Просмотр статистики-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseThree2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Статистика.</strong> Для ридера доступна общая статистика(по группе) и личная.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <div sec:authorize="hasRole('USER')" style="max-width: 1200px;" class="w-100 accordion" id="accordionExample3">-->
-<!--        <h2 class="text-center fw-bold text-white">-->
-<!--            Пользователь-->
-<!--        </h2>-->
-<!--        <p class="lead text-center">В этом блоке собрана информация о возможностях в рамках данной роли.</p>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">-->
-<!--                    Мои возможности-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseOne3" class="accordion-collapse collapse show" data-bs-parent="#accordionExample3">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Личные данные.</strong> Для пользователя доступны только его личные данные: транзакции и статистика по ним. Он может редактировать, удалять, добавлять и фильтровать их.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">-->
-<!--                    Добавление и редактирование транзакций-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseTwo3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Транзакции.</strong> Внимательно добавляйте и редактируйте транзакции. Обновляйте свои расходы и доходы регулярно, тогда статистика будет более точной.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="accordion-item">-->
-<!--            <h2 class="accordion-header">-->
-<!--                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">-->
-<!--                    Просмотр статистики-->
-<!--                </button>-->
-<!--            </h2>-->
-<!--            <div id="collapseThree3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">-->
-<!--                <div class="accordion-body">-->
-<!--                    <strong>Статистика.</strong> Для юзера доступна только личная статистика по транзакциям.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
