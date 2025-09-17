@@ -10,7 +10,7 @@
 <body class="bg-dark">
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/kitty-cash/welcome}">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
             <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
             KittyCash
         </a>
@@ -24,23 +24,50 @@
                 </li>
                 <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/transactions}">Транзакции</a>
+                    <a class="nav-link active" th:href="@{/admin/transactions}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/info}">Профиль</a>
+                    <a class="nav-link" th:href="@{/admin/info}" sec:authorize="hasRole('ADMIN')">Профиль</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/users}">Группа</a>
+                    <a class="nav-link" th:href="@{/admin/users}" sec:authorize="hasRole('ADMIN')">Группа</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/stats}">Статистика</a>
+                    <a class="nav-link" th:href="@{/admin/stats}" sec:authorize="hasRole('ADMIN')">Статистика</a>
                 </li>
+
+                <!--                Юзер-->
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/user/transactions}" sec:authorize="hasRole('USER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/info}" sec:authorize="hasRole('USER')">Профиль</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/stats}" sec:authorize="hasRole('USER')">Статистика</a>
+                </li>
+
+                <!--                Ридер-->
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/reader/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reader/users}" sec:authorize="hasRole('READER')">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reader/stats}" sec:authorize="hasRole('READER')">Статистика</a>
+                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -66,11 +93,15 @@
             <tbody>
             <tr th:each="t : ${trans}">
                 <td th:text="${t.id}"></td>
-                <td th:text="${t.date}"></td>
+                <td th:text="${#temporals.format(t.date, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${t.amount}"></td>
                 <td th:text="${t.description}"></td>
-                <td th:text="${t.category.name}"></td>
-                <td th:text="${t.category.name}"></td>
+                <td th:text="${t.category != null ? t.category.name : 'Без категории'}"></td>
+                <td>
+                    <button th:onclick="|location.href='@{/reader/users-trans}'|" type="button" >
+                        Удалить
+                    </button>
+                </td>
 
             </tr>
             </tbody>
@@ -80,7 +111,10 @@
     <!-- Правая часть: карточка -->
     <div class="flex-grow-1 d-flex justify-content-end align-items-start">
         <div class="card bg-dark text-white shadow-lg" style=" height: 93%; border-radius: 15px; padding: 20px;">
-            <button th:onclick="|location.href='@{/auth/register}'|" type="button" class="btn btn-outline-light btn-lg px-4">
+            <button sec:authorize="hasRole('ADMIN')" th:onclick="|location.href='@{/admin/users-trans}'|" type="button" class="btn btn-outline-light btn-lg px-4">
+                К транзакциям группы
+            </button>
+            <button sec:authorize="hasRole('READER')" th:onclick="|location.href='@{/reader/users-trans}'|" type="button" class="btn btn-outline-light btn-lg px-4">
                 К транзакциям группы
             </button>
             <h2> <br></h2>
@@ -90,14 +124,14 @@
                 <div class="mb-3">
                     <label for="amount" class="form-label">Сумма</label>
                     <input type="number" id="amount" name="amount" class="form-control"
-                           th:field="*{amount}">
+                           th:field="*{amount}" min="0" step="10">
                 </div>
                 <div class="mb-3">
                     <label for="type" class="form-label">Тип</label>
                     <select id="type" name="type" class="form-select">
-                        <option value="salary">Зарплата</option>
-                        <option value="debt_back">Возврат долгов</option>
-                        <option value="passive">Пассивный доход</option>
+                        <option value="Зарплата">Зарплата</option>
+                        <option value="Возврат долгов">Возврат долгов</option>
+                        <option value="Пассивный доход">Пассивный доход</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -113,14 +147,14 @@
                 <div class="mb-3">
                     <label for="amount2" class="form-label">Сумма</label>
                     <input type="number" id="amount2" name="amount" class="form-control"
-                           th:field="*{amount}">
+                           th:field="*{amount}" min="0" step="10">
                 </div>
                 <div class="mb-3">
                     <label for="type2" class="form-label">Тип</label>
                     <select id="type2" name="type" class="form-select">
-                        <option value="home">Дом</option>
-                        <option value="health">Здоровье</option>
-                        <option value="food">Еда</option>
+                        <option value="Дом">Дом</option>
+                        <option value="Здоровье">Здоровье</option>
+                        <option value="Еда">Еда</option>
 
                     </select>
                 </div>

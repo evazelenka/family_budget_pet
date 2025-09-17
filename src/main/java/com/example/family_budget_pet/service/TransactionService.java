@@ -41,11 +41,23 @@ public class TransactionService {
         User user = userRepository.findByUsername(username).orElse(null);
         Category c = categoryRepository.findByName(type);
 
+        System.out.println("-----------------------------------");
+        System.out.println(c.getName());
+        System.out.println("-----------------------------------");
         transaction.setDate(LocalDateTime.now());
         transaction.setUser(user);
         transaction.setDescription(description);
         transaction.setCategory(c);
         return repository.save(transaction);
+    }
+
+    @Transactional
+    public void deleteById(Long id){
+        repository.deleteById(id);
+    }
+
+    public Transaction findById(Long id){
+        return repository.findById(id).orElse(null);
     }
 }
 

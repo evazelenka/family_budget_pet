@@ -1,11 +1,20 @@
 package com.example.family_budget_pet.controllers;
 
+import com.example.family_budget_pet.domain.Group;
+import com.example.family_budget_pet.domain.User;
+import com.example.family_budget_pet.service.GroupService;
+import com.example.family_budget_pet.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -13,9 +22,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class UserController {
 
-    @GetMapping("/dashboard")
-    public String userPage(Model model){
+    private final UserService userService;
+    private final GroupService groupService;
+
+    @GetMapping("/info")
+    public String userPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User user = userService.findByUsername(principal.getUsername());
+        List<Group> groups = groupService.findByUserId(user.getId());
+
+        if (groups != null && !groups.isEmpty()){
+            model.addAttribute("groupName", groups.get(0).getGroupName());
+        }
         model.addAttribute("title", "Профиль");
+        model.addAttribute("user", user);
+        model.addAttribute("role", "user");
         return "general/info.html";
+    }
+
+    @PostMapping("/group/join")
+    public String joinGroup(@RequestParam(required = false) String groupToken, Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
+        User user = userService.findByUsername(principal.getUsername());
+        model.addAttribute("user", user);
+        model.addAttribute("role", "user");
+        Group group;
+        if (groupToken.startsWith("token")){
+            group = groupService.findByToken(groupToken);
+            if (group == null) {
+                model.addAttribute("error", "Группа с таким токеном не найдена!");
+                return "redirect:/user/info";
+            }
+            groupService.addUser(group, user);
+
+            model.addAttribute("groupName", group.getGroupName());
+        }
+        model.addAttribute("title", "Группа");
+        return "redirect:/user/info ";
     }
 }

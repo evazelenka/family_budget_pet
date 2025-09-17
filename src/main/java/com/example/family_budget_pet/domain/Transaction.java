@@ -1,6 +1,7 @@
 package com.example.family_budget_pet.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class Transaction {
 
     private LocalDateTime date;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "Сумма должна быть больше или равна 0")
     private BigDecimal amount;
 
     private String description;

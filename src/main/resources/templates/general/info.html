@@ -24,7 +24,7 @@
                 </li>
                 <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" th:href="@{/admin/info}" sec:authorize="hasRole('ADMIN')">Профиль</a>
@@ -213,7 +213,7 @@
         <p><strong>Роль:</strong> <span th:text="${role}">USER</span></p>
         <p><strong>Имя:</strong> <span th:text="${user.username}">Иван</span></p>
         <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
-        <p><strong>Группа:</strong> <span th:text="${groupName}">-</span></p>
+        <p th:if="${groupName != null}"><strong>Группа:</strong> <span th:text="${groupName}">-</span></p>
         <div sec:authorize="hasRole('USER')" th:unless="${group != null}">
             <form th:action="@{/user/group/join}" method="post">
                 <label for="groupToken">Токен группы:</label>

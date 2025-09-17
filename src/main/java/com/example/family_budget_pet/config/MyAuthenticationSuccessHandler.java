@@ -21,11 +21,15 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        String redirectUrl = "/user/dashboard"; // дефолтный URL для USER
+        String redirectUrl = "/user/info"; // дефолтный URL для USER
 
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 redirectUrl = "/admin/info";
+                break;
+            }
+            if (authority.getAuthority().equals("ROLE_READER")) {
+                redirectUrl = "/reader/info";
                 break;
             }
         }

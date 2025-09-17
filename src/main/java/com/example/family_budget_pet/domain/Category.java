@@ -22,3 +22,5 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private CategoryType type;
 }
+
+
