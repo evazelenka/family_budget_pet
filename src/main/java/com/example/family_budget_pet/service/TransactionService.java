@@ -24,18 +24,6 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
 
-//    public List<Transaction> filter(BigDecimal amount,
-//                                    Long categoryId,
-//                                    Long userId,
-//                                    LocalDateTime startDate,
-//                                    LocalDateTime endDate){
-//        return repository.findAll(TransactionSpecification.filter(amount, categoryId, userId, startDate, endDate));
-//    }
-
-//    public Double getIncome(Long userId, String type){
-//
-//    }
-
     @Transactional
     public Transaction save(Transaction transaction, String type, String description, String username) {
         User user = userRepository.findByUsername(username).orElse(null);

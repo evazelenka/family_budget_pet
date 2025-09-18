@@ -48,18 +48,18 @@ public class TransactionsController {
 
     @GetMapping("/my")
     public String showTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-//        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
-//        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
-//        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
-//        Category salary = Category.builder().name("Зарплата").type(CategoryType.INCOME).build();
-//        Category debt_back = Category.builder().name("Возврат долгов").type(CategoryType.INCOME).build();
-//        Category passive = Category.builder().name("Пассивный доход").type(CategoryType.INCOME).build();
-//       categoryService.save(home);
-//       categoryService.save(health);
-//       categoryService.save(food);
-//       categoryService.save(salary);
-//       categoryService.save(debt_back);
-//       categoryService.save(passive);
+        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
+        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
+        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
+        Category salary = Category.builder().name("Зарплата").type(CategoryType.INCOME).build();
+        Category debt_back = Category.builder().name("Возврат долгов").type(CategoryType.INCOME).build();
+        Category passive = Category.builder().name("Пассивный доход").type(CategoryType.INCOME).build();
+       categoryService.save(home);
+       categoryService.save(health);
+       categoryService.save(food);
+       categoryService.save(salary);
+       categoryService.save(debt_back);
+       categoryService.save(passive);
 
         User user = userService.findByUsername(principal.getUsername());
         List<Transaction> transactions = user.getTransactions();

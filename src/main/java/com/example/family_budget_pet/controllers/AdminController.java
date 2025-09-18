@@ -43,7 +43,7 @@ public class AdminController {
         Long adminId = admin.getId();
         Group group = groupService.findByAdminId(adminId);
         if (group != null){
-            model.addAttribute("users", userService.findByAdminGroupId(adminId));
+            model.addAttribute("users", group.getUsers());
             model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");
@@ -59,22 +59,9 @@ public class AdminController {
     @GetMapping("/info")
     public String adminPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
-        Group group = groupService.findByAdminId(admin.getId());
         model.addAttribute("title", "Админка");
         model.addAttribute("user", admin);
-        model.addAttribute("role", "admin");
-        if (group != null){
-            model.addAttribute("groupName", group.getGroupName());
-        }
         return "general/info.html";
-    }
-
-    @GetMapping("/group")
-    public String groupPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-        User admin = userService.findByUsername(principal.getUsername());
-        Group group = groupService.findByAdminId(admin.getId());
-        model.addAttribute("groupName", group.getGroupName());
-        return "admin/users";
     }
 
     @PostMapping("/group/create")

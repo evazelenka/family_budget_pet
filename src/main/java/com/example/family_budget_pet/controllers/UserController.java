@@ -28,14 +28,8 @@ public class UserController {
     @GetMapping("/info")
     public String userPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User user = userService.findByUsername(principal.getUsername());
-        List<Group> groups = groupService.findByUserId(user.getId());
-
-        if (groups != null && !groups.isEmpty()){
-            model.addAttribute("groupName", groups.get(0).getGroupName());
-        }
         model.addAttribute("title", "Профиль");
         model.addAttribute("user", user);
-        model.addAttribute("role", "user");
         return "general/info.html";
     }
 
@@ -43,7 +37,6 @@ public class UserController {
     public String joinGroup(@RequestParam(required = false) String groupToken, Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
         User user = userService.findByUsername(principal.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("role", "user");
         Group group;
         if (groupToken.startsWith("token")){
             group = groupService.findByToken(groupToken);
@@ -52,10 +45,7 @@ public class UserController {
                 return "redirect:/user/info";
             }
             groupService.addUser(group, user);
-
-            model.addAttribute("groupName", group.getGroupName());
         }
-        model.addAttribute("title", "Группа");
-        return "redirect:/user/info ";
+        return "redirect:/user/info";
     }
 }

@@ -63,7 +63,7 @@ public class AuthController {
         }
 
         try {
-            if ("admin".equals(mode)) {
+            if ("admin".equals(mode) || "just-user".equals(mode)) {
                 userService.register(user, mode);
             } else if ("member".equals(mode) && groupToken.startsWith("token")) {
                 Group group = groupService.findByToken(groupToken);
@@ -73,8 +73,6 @@ public class AuthController {
                 }
                 userService.register(user, mode);
                 groupService.addUser(group, user);
-            } else if ("just-user".equals(mode)){
-                userService.register(user, mode);
             }
         } catch (Exception e) {
             model.addAttribute("error", "Ошибка регистрации: " + e.getMessage());

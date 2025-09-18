@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -60,7 +61,7 @@ public class GroupService {
         groupRepository.delete(group);
     }
 
-    public List<Group> findByUserId(Long userId){
+    public Optional<Group> findByUserId(Long userId){
         return groupRepository.findByUserId(userId);
     }
 }

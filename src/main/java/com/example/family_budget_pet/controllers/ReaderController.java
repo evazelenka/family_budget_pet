@@ -27,25 +27,19 @@ public class ReaderController {
     @GetMapping("/info")
     public String readerPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User reader = userService.findByUsername(principal.getUsername());
-        List<Group> groups = groupService.findByUserId(reader.getId());
-
-        if (groups != null && !groups.isEmpty()){
-            model.addAttribute("groupName", groups.get(0).getGroupName());
-        }
         model.addAttribute("title", "Профиль");
         model.addAttribute("user", reader);
-        model.addAttribute("role", "reader");
         return "general/info.html";
     }
 
     @GetMapping("/users")
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User reader = userService.findByUsername(principal.getUsername());
-        List<Group> groups = groupService.findByUserId(reader.getId());
+        Group group = groupService.findByUserId(reader.getId()).orElse(null);
 
-        if (groups != null && !groups.isEmpty()){
-            model.addAttribute("users", groups.get(0).getUsers());
-            model.addAttribute("group", groups.get(0));
+        if (group != null){
+            model.addAttribute("users", group.getUsers());
+            model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");
         return "reader/users";
@@ -59,13 +53,10 @@ public class ReaderController {
            group = groupService.findByToken(groupToken);
             if (group == null) {
                 model.addAttribute("error", "Группа с таким токеном не найдена!");
-                return "reader/users";
+                return "redirect:/reader/users";
             }
             groupService.addUser(group, reader);
-            model.addAttribute("users", group.getUsers());
-            model.addAttribute("group", group);
         }
-        model.addAttribute("title", "Группа");
-        return "reader/users";
+        return "redirect:/reader/users";
     }
 }

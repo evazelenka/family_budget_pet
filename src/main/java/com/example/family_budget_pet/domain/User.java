@@ -6,9 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +25,7 @@ public class User {
     @NotBlank(message = "Имя обязательно.")
     private String username;
 
+    @Column(unique = true, nullable = false)
     @Email
     @NotBlank(message = "Email обязателен.")
     private String email;
@@ -38,14 +37,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "role_id")// одна роль
+    private Role role;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Group> groups = new HashSet<>();
+    @ManyToOne                         // одна группа
+    @JoinColumn(name = "group_id")
+    private Group group;
 }

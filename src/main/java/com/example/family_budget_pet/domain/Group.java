@@ -25,12 +25,7 @@ public class Group {
     @JoinColumn(name = "admin_id")
     private User admin;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "group_users",
-            joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @OneToMany(mappedBy = "group")
     private Set<User> users = new HashSet<>();
 
     private String token;

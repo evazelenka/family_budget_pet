@@ -10,7 +10,7 @@
 <body class="bg-dark">
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/family/welcome}">
+        <a class="navbar-brand" th:href="@{/kitty-cash/welcome}">
             <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
             KittyCash
         </a>
@@ -210,11 +210,11 @@
     <div class="flex-grow-1 d-flex justify-content-center align-items-center ">
     <div class="card bg-dark text-white shadow-lg" style="width: 90%; height: 80%; border-radius: 15px; padding: 20px;">
         <h5 class="card-title">Информация о пользователе</h5>
-        <p><strong>Роль:</strong> <span th:text="${role}">USER</span></p>
+        <p><strong>Роль:</strong> <span th:text="${user.role}">USER</span></p>
         <p><strong>Имя:</strong> <span th:text="${user.username}">Иван</span></p>
         <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
-        <p th:if="${groupName != null}"><strong>Группа:</strong> <span th:text="${groupName}">-</span></p>
-        <div sec:authorize="hasRole('USER')" th:unless="${group != null}">
+        <p th:if="${user.group != null}"><strong>Группа:</strong> <span th:text="${user.group.groupName}">-</span></p>
+        <div sec:authorize="hasRole('USER')" th:unless="${user.group != null}">
             <form th:action="@{/user/group/join}" method="post">
                 <label for="groupToken">Токен группы:</label>
                 <input type="text" id="groupToken" name="groupToken" required>
