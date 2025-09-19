@@ -24,7 +24,7 @@
                 </li>
                 <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/transactions}">Транзакции</a>
+                    <a class="nav-link active" th:href="@{/transactions/my}">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/info}">Профиль</a>
@@ -80,7 +80,7 @@
     <!-- Правая часть: карточка -->
     <div class="flex-grow-1 d-flex justify-content-end align-items-start">
         <div class="card bg-dark text-white shadow-lg" style=" height: 93%; border-radius: 15px; padding: 20px;">
-            <button th:onclick="|location.href='@{/auth/register}'|" type="button" class="btn btn-outline-light btn-lg px-4">
+            <button th:onclick="|location.href='@{/transactions/my}'|" type="button" class="btn btn-outline-light btn-lg px-4">
                 К моим транзакциям
             </button>
             <h2> <br></h2>

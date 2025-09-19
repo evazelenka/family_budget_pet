@@ -1,9 +1,7 @@
 package com.example.family_budget_pet.controllers;
 
-import com.example.family_budget_pet.domain.Category;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
-import com.example.family_budget_pet.domain.enums.CategoryType;
 import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
@@ -13,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/transactions")
@@ -48,18 +44,19 @@ public class TransactionsController {
 
     @GetMapping("/my")
     public String showTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
-        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
-        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
-        Category salary = Category.builder().name("Зарплата").type(CategoryType.INCOME).build();
-        Category debt_back = Category.builder().name("Возврат долгов").type(CategoryType.INCOME).build();
-        Category passive = Category.builder().name("Пассивный доход").type(CategoryType.INCOME).build();
-       categoryService.save(home);
-       categoryService.save(health);
-       categoryService.save(food);
-       categoryService.save(salary);
-       categoryService.save(debt_back);
-       categoryService.save(passive);
+//        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
+//        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
+//        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
+//        Category salary = Category.builder().name("Зарплата").type(CategoryType.INCOME).build();
+//        Category debt_back = Category.builder().name("Возврат долгов").type(CategoryType.INCOME).build();
+//        Category passive = Category.builder().name("Пассивный доход").type(CategoryType.INCOME).build();
+//       categoryService.deleteById(7L);
+//       categoryService.deleteById(8L);
+//       categoryService.deleteById(9L);
+//       categoryService.deleteById(10L);
+//       categoryService.deleteById(11L);
+//       categoryService.deleteById(12L);
+
 
         User user = userService.findByUsername(principal.getUsername());
         List<Transaction> transactions = user.getTransactions();

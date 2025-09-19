@@ -24,7 +24,7 @@
                 </li>
                 <!--                Ридер-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reader/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
+                    <a class="nav-link" th:href="@{//transactions/my}" sec:authorize="hasRole('READER')">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>

@@ -24,7 +24,7 @@
                 </li>
                 <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/info}" sec:authorize="hasRole('ADMIN')">Профиль</a>
@@ -38,7 +38,7 @@
 
                 <!--                Юзер-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/transactions}" sec:authorize="hasRole('USER')">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('USER')">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/user/info}" sec:authorize="hasRole('USER')">Профиль</a>
@@ -50,7 +50,7 @@
 
                 <!--                Ридер-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reader/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('READER')">Транзакции</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>
