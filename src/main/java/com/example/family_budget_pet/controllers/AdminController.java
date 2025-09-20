@@ -12,9 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -26,17 +23,6 @@ public class AdminController {
     private final TransactionService tService;
     private final CategoryService cService;
 
-    @GetMapping("/transactions")
-    public String showAllTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-        User admin = userService.findByUsername(principal.getUsername());
-        Set<User> users = userService.findByAdminGroupId(admin.getId());
-        Set<Transaction> transactions = new HashSet<>();
-        if (admin != null && users != null && transactions != null){
-
-        }
-        return "/admin/trans";
-    }
-
     @GetMapping("/users")
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
@@ -47,7 +33,7 @@ public class AdminController {
             model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");
-        return "admin/users";
+        return "admin-reader/users";
     }
 
     @PostMapping("/users/{id}/role")
@@ -67,9 +53,16 @@ public class AdminController {
     @PostMapping("/group/create")
     public String createNewGroup(@RequestParam String groupName, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
-        Group group = groupService.save(groupName, admin);
+        Group group = groupService.findByGroupName(groupName);
+        if (group != null){
+            model.addAttribute("error", "Группа с таким именем уже существует!");
+            return "redirect:/admin/users";
+        }
+        group = groupService.save(groupName, admin);
+        admin.setGroup(group);
+        userService.save(admin);
         model.addAttribute("group", group);
-        return "admin/users";
+        return "redirect:/admin/users";
     }
 
 
@@ -77,6 +70,6 @@ public class AdminController {
     public String deleteGroup(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
         userService.deleteGroup(admin.getId());
-        return "admin/users";
+        return "redirect:/admin/users";
     }
 }

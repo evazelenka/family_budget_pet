@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -41,7 +43,8 @@ public class User {
     @JoinColumn(name = "role_id")// одна роль
     private Role role;
 
-    @ManyToOne                         // одна группа
+    @ManyToOne
     @JoinColumn(name = "group_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Group group;
 }

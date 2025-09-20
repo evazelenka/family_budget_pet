@@ -1,8 +1,10 @@
 package com.example.family_budget_pet.controllers;
 
+import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.service.CategoryService;
+import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class TransactionsController {
     private final TransactionService service;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final GroupService groupService;
 
     @PostMapping("/add")
     public String addTran(@ModelAttribute("transaction")Transaction transaction, @RequestParam String type, @RequestParam String description, Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
@@ -36,14 +39,25 @@ public class TransactionsController {
         Transaction t = service.findById(id);
         if (t == null){
             model.addAttribute("error", "Транзакция не найдена");
-            return "reader/users";
+            return "redirect:/transactions/my";
         }
-        model.addAttribute("title", "Транзакции");
-        return "admin/trans";
+        service.deleteById(id);
+        return "redirect:/transactions/my";
+    }
+
+    @PostMapping("/delete-user-tran/{id}")
+    public String deleteUserTran(@PathVariable Long id, Model model){
+        Transaction t = service.findById(id);
+        if (t == null){
+            model.addAttribute("error", "Транзакция не найдена");
+            return "redirect:/transactions/group";
+        }
+        service.deleteById(id);
+        return "redirect:/transactions/group";
     }
 
     @GetMapping("/my")
-    public String showTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+    public String showMyTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
 //        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
 //        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
 //        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
@@ -66,5 +80,23 @@ public class TransactionsController {
         model.addAttribute("title", "Транзакции");
         model.addAttribute("transaction", new Transaction());
         return "general/trans";
+    }
+
+    @GetMapping("/group")
+    public String showGroupTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User user = userService.findByUsername(principal.getUsername());
+        Group group = groupService.findByUserId(user.getId()).orElse(null);
+        if (group != null){
+            List<Transaction> transactions = service.findAllByGroupId(group.getId());
+            model.addAttribute("trans", transactions);
+        }
+        model.addAttribute("title", "Транзакции");
+        return "admin-reader/users-trans";
+    }
+
+    @PostMapping("/update-desc")
+    public String updateTransDescription(@RequestParam Long id, @RequestParam String description, Model model){
+        service.updateTransDescription(id, description);
+        return "redirect:/transactions/group";
     }
 }

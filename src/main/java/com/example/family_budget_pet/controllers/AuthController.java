@@ -71,6 +71,7 @@ public class AuthController {
                     model.addAttribute("error", "Группа с таким токеном не найдена!");
                     return "auth/register";
                 }
+                user.setGroup(group);
                 userService.register(user, mode);
                 groupService.addUser(group, user);
             }

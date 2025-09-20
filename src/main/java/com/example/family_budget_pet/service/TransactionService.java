@@ -47,5 +47,20 @@ public class TransactionService {
     public Transaction findById(Long id){
         return repository.findById(id).orElse(null);
     }
+
+    @Transactional
+    public Transaction updateTransDescription(Long id, String newDescription){
+        Transaction t = findById(id);
+        if (t == null){
+            return null;
+        }
+        t.setDescription(newDescription);
+        repository.save(t);
+        return t;
+    }
+
+    public List<Transaction> findAllByGroupId(Long groupId){
+        return repository.findAllByGroupId(groupId);
+    }
 }
 

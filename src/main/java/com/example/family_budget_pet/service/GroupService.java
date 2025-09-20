@@ -64,4 +64,8 @@ public class GroupService {
     public Optional<Group> findByUserId(Long userId){
         return groupRepository.findByUserId(userId);
     }
+
+    public Group findByGroupName(String groupName){
+        return groupRepository.findByGroupName(groupName).orElse(null);
+    }
 }

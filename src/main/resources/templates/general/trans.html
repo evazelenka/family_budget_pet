@@ -98,9 +98,11 @@
                 <td th:text="${t.description}"></td>
                 <td th:text="${t.category != null ? t.category.name : 'Без категории'}"></td>
                 <td>
-                    <button th:onclick="|location.href='@{/reader/users-trans}'|" type="button" >
-                        Удалить
-                    </button>
+                    <form th:action="@{/transactions/delete/{id}(id=${t.id})}"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
                 </td>
 
             </tr>
@@ -111,10 +113,7 @@
     <!-- Правая часть: карточка -->
     <div class="flex-grow-1 d-flex justify-content-end align-items-start">
         <div class="card bg-dark text-white shadow-lg" style=" height: 93%; border-radius: 15px; padding: 20px;">
-            <button sec:authorize="hasRole('ADMIN')" th:onclick="|location.href='@{/admin/users-trans}'|" type="button" class="btn btn-outline-light btn-lg px-4">
-                К транзакциям группы
-            </button>
-            <button sec:authorize="hasRole('READER')" th:onclick="|location.href='@{/reader/users-trans}'|" type="button" class="btn btn-outline-light btn-lg px-4">
+            <button sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_READER')" th:onclick="|location.href='@{/transactions/group}'|" type="button" class="btn btn-outline-light btn-lg px-4">
                 К транзакциям группы
             </button>
             <h2> <br></h2>

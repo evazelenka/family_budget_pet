@@ -12,4 +12,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     Optional<Group> findByAdmin_Id(Long adminId);
     @Query("SELECT g FROM Group g JOIN g.users u WHERE u.id = :userId")
     Optional<Group> findByUserId(@Param("userId") Long userId);
+    Optional<Group> findByGroupName(String groupName);
 }

@@ -65,13 +65,33 @@ public class UserService {
         return userRepository.save(user);
     }
 
+//    @Transactional
+//    public void deleteGroup(Long adminId){
+//        User admin = userRepository.findById(adminId).orElse(null);
+//        Group group = groupRepository.findByAdmin_Id(adminId).orElse(null);
+//        if (admin != null && group != null){
+//            admin.setGroup(null);
+//            groupRepository.delete(group);
+//        }
+//    }
+
     @Transactional
-    public void deleteGroup(Long adminId){
-        User admin = userRepository.findById(adminId).orElse(null);
-        Group group = groupRepository.findByAdmin_Id(adminId).orElse(null);
-        if (admin != null && group != null){
-            admin.setGroup(null);
-            groupRepository.delete(group);
+    public void deleteGroup(Long adminId) {
+        Group group = groupRepository.findByAdmin_Id(adminId)
+                .orElseThrow(() -> new RuntimeException("Group not found"));
+
+        // сначала убрать связь у пользователей
+        for (User user : group.getUsers()) {
+            user.setGroup(null);
+            userRepository.save(user);
         }
+
+        // потом удалить саму группу
+        groupRepository.delete(group);
+    }
+
+    @Transactional
+    public User save(User user){
+        return userRepository.save(user);
     }
 }

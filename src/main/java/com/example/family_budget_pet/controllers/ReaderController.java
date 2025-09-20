@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/reader")
 @PreAuthorize("hasAuthority('ROLE_READER')")
@@ -42,7 +40,7 @@ public class ReaderController {
             model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");
-        return "reader/users";
+        return "admin-reader/users";
     }
 
     @PostMapping("/group/join")
@@ -55,6 +53,8 @@ public class ReaderController {
                 model.addAttribute("error", "Группа с таким токеном не найдена!");
                 return "redirect:/reader/users";
             }
+            reader.setGroup(group);
+            userService.save(reader);
             groupService.addUser(group, reader);
         }
         return "redirect:/reader/users";

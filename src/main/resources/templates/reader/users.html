@@ -65,9 +65,7 @@
                 <td th:text="${u.username}"></td>
                 <td th:text="${u.email}"></td>
                 <td>
-                    <span th:if="${u.roles != null}"
-                          th:each="role : ${u.roles}"
-                          th:text="${role.name}" class="badge bg-primary me-1">ROLE_USER</span>
+                    <span th:text="${u.role.name}" class="badge bg-primary me-1">ROLE_USER</span>
                 </td>
             </tr>
             </tbody>

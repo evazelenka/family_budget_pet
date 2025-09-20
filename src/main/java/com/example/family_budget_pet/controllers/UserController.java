@@ -44,6 +44,8 @@ public class UserController {
                 model.addAttribute("error", "Группа с таким токеном не найдена!");
                 return "redirect:/user/info";
             }
+            user.setGroup(group);
+            userService.save(user);
             groupService.addUser(group, user);
         }
         return "redirect:/user/info";

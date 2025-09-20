@@ -66,11 +66,11 @@
             <tbody>
             <tr th:each="t : ${trans}">
                 <td th:text="${t.id}"></td>
-                <td th:text="${t.date}"></td>
+                <td th:text="${#temporals.format(t.date, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${t.amount}"></td>
                 <td th:text="${t.description}"></td>
                 <td th:text="${t.category.name}"></td>
-                <td th:text="${t.category.name}"></td>
+                <td th:text="${t.user.username}"></td>
 
             </tr>
             </tbody>
@@ -84,33 +84,30 @@
                 К моим транзакциям
             </button>
             <h2> <br></h2>
-            <h5 class="card-title">Изменить описание</h5>
-            <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-80"
-                  th:object="${transaction}">
+            <div sec:authorize="hasRole('ADMIN')">
+                <h5 class="card-title">Изменить описание</h5>
+                <form th:action="@{/transactions/update-desc}" method="post" class="d-flex flex-column h-80">
                 <div class="mb-3">
                     <label for="id" class="form-label">ID</label>
-                    <input type="number" id="id" name="id" class="form-control"
-                           th:field="*{id}">
+                    <input type="number" id="id" name="id" class="form-control">
                 </div>
-
                 <div class="mb-3">
                     <label for="description" class="form-label">Описание</label>
                     <input type="text" id="description" name="description" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-light mt-auto">Изменить</button>
             </form>
-            <h2> <br></h2>
-            <h5 class="card-title">Удалить транзакцию пользователя</h5>
-            <form th:action="@{/transactions/add}" method="post" class="d-flex flex-column h-80"
-                  th:object="${transaction}">
+                <h2> <br></h2>
+                <h5 class="card-title">Удалить транзакцию пользователя</h5>
+                <form th:action="@{/transactions/delete/{id}(id=${id2})}" method="post" class="d-flex flex-column h-80">
                 <div class="mb-3">
                     <label for="id2" class="form-label">ID</label>
-                    <input type="number" id="id2" name="id2" class="form-control"
-                           th:field="*{id2}">
+                    <input type="number" id="id2" name="id2" class="form-control">
                 </div>
 
                 <button type="submit" class="btn btn-light mt-auto">Удалить</button>
             </form>
+            </div>
 
         </div>
     </div>
