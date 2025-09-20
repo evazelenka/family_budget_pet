@@ -45,14 +45,32 @@ public class TransactionsController {
         return "redirect:/transactions/my";
     }
 
-    @PostMapping("/delete-user-tran/{id}")
-    public String deleteUserTran(@PathVariable Long id, Model model){
+    @GetMapping("/update/{id}")
+    public String updateTran(@PathVariable Long id, Model model){
         Transaction t = service.findById(id);
+        if (t == null){
+            model.addAttribute("error", "Транзакция не найдена");
+            return "redirect:/transactions/my";
+        }
+        model.addAttribute("tran", t);
+        model.addAttribute("transaction", t);
+        return "general/update-transaction";
+    }
+
+    @PostMapping("/update")
+    public String updateTran(@ModelAttribute("transaction") Transaction t){
+        service.update(t);
+        return "redirect:/transactions/my";
+    }
+
+    @PostMapping("/delete-user-tran")
+    public String deleteUserTran(@RequestParam Long id2, Model model){
+        Transaction t = service.findById(id2);
         if (t == null){
             model.addAttribute("error", "Транзакция не найдена");
             return "redirect:/transactions/group";
         }
-        service.deleteById(id);
+        service.deleteById(id2);
         return "redirect:/transactions/group";
     }
 

@@ -87,7 +87,7 @@
                 <th scope="col">Сумма</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Категория</th>
-                <th scope="col">Действие</th>
+                <th scope="col">Действия</th>
             </tr>
             </thead>
             <tbody>
@@ -98,6 +98,11 @@
                 <td th:text="${t.description}"></td>
                 <td th:text="${t.category != null ? t.category.name : 'Без категории'}"></td>
                 <td>
+                    <form th:action="@{/transactions/update/{id}(id=${t.id})}"
+                          method="get"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-outline-light">Редактировать</button>
+                    </form>
                     <form th:action="@{/transactions/delete/{id}(id=${t.id})}"
                           method="post"
                           style="display:inline;">
@@ -154,7 +159,6 @@
                         <option value="Дом">Дом</option>
                         <option value="Здоровье">Здоровье</option>
                         <option value="Еда">Еда</option>
-
                     </select>
                 </div>
                 <div class="mb-3">

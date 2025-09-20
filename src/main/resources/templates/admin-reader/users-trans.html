@@ -99,14 +99,13 @@
             </form>
                 <h2> <br></h2>
                 <h5 class="card-title">Удалить транзакцию пользователя</h5>
-                <form th:action="@{/transactions/delete/{id}(id=${id2})}" method="post" class="d-flex flex-column h-80">
+                <form th:action="@{/transactions/delete-user-tran}" method="post" class="d-flex flex-column h-80">
                 <div class="mb-3">
                     <label for="id2" class="form-label">ID</label>
                     <input type="number" id="id2" name="id2" class="form-control">
                 </div>
-
                 <button type="submit" class="btn btn-light mt-auto">Удалить</button>
-            </form>
+                </form>
             </div>
 
         </div>

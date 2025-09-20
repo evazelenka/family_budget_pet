@@ -40,6 +40,24 @@ public class TransactionService {
     }
 
     @Transactional
+    public Transaction update(Transaction t){
+        Transaction tran = findById(t.getId());
+        if (t.getAmount() != null){
+            tran.setAmount(t.getAmount());
+        }
+        if (t.getDate() != null){
+            tran.setDate(t.getDate());
+        }
+        if (t.getCategory() != null){
+            tran.setCategory(t.getCategory());
+        }
+        if (t.getDescription() != null){
+            tran.setDescription(t.getDescription());
+        }
+        return repository.save(tran);
+    }
+
+    @Transactional
     public void deleteById(Long id){
         repository.deleteById(id);
     }
