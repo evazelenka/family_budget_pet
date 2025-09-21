@@ -31,21 +31,21 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    // ====== Пользователь ======
-//    @Query("SELECT t.category.type AS type, SUM(t.amount) AS total " +
-//            "FROM Transaction t " +
-//            "WHERE t.user.id = :userId " +
-//            "GROUP BY t.category.type")
-//    List<TypeStats> findUserStatsByType(Long userId);
+//     ====== Пользователь ======
+    @Query("SELECT t.category.type AS type, SUM(t.amount) AS total " +
+            "FROM Transaction t " +
+            "WHERE t.user.id = :userId " +
+            "GROUP BY t.category.type")
+    List<TypeStats> findUserStatsByType(Long userId);
 
-//    @Query("SELECT t.category.name AS categoryName, SUM(t.amount) AS total " +
-//            "FROM Transaction t " +
-//            "WHERE t.user.id = :userId " +
-//            "GROUP BY t.category.name")
-//    List<CategoryStats> findUserStatsByCategory(Long userId);
+    @Query("SELECT t.category.name AS categoryName, SUM(t.amount) AS total " +
+            "FROM Transaction t " +
+            "WHERE t.user.id = :userId " +
+            "GROUP BY t.category.name")
+    List<CategoryStats> findUserStatsByCategory(Long userId);
 
 
-    // ====== Админ (по группе) ======
+////     ====== Админ (по группе) ======
 //    @Query("SELECT t.category.type AS type, SUM(t.amount) AS total " +
 //            "FROM Transaction t " +
 //            "JOIN t.user u " +
@@ -53,7 +53,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 //            "WHERE g.id = :groupId " +
 //            "GROUP BY t.category.type")
 //    List<TypeStats> findGroupStatsByType(Long groupId);
-
+//
 //    @Query("SELECT t.category.name AS categoryName, SUM(t.amount) AS total " +
 //            "FROM Transaction t " +
 //            "JOIN t.user u " +

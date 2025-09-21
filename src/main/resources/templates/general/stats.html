@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="bg-dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/family/welcome}">
+            <img th:src="@{/images/paw.svg}" alt="Logo" width="30" height="30" class="img-fluid d-inline-block align-text-top">
+            KittyCash
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/family/welcome}">Главная</a>
+                </li>
+                <!--                Админ-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/dashboard}" sec:authorize="hasRole('ADMIN')">Статистика</a>
+                </li>
+
+                <!--                Юзер-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('USER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions}" sec:authorize="hasRole('USER')">Профиль</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/statistics}" sec:authorize="hasRole('USER')">Статистика</a>
+                </li>
+
+                <!--                Ридер-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/transactions}" sec:authorize="hasRole('READER')">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Группа</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/dashboard}" sec:authorize="hasRole('READER')">Статистика</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/family/about}">О проекте</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="align-items-center py-5">
+<div class="container text-center">
+    <!-- Заголовок общий -->
+    <h2 class="fw-bold text-white mb-4">Статистика моих транзакций</h2>
+
+    <!-- Первый ряд -->
+    <div class="row mb-4">
+        <!-- Таблица слева -->
+        <div class="col-sm-4">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Доходы</h5>
+                    <div th:each="c : ${categoryStatsIncome}" class="progress bg-dark mb-2">
+                        <div class="progress-bar"
+                             th:style="'width:' + ${(c.getTotal().doubleValue() / totalIncome) * 100} + '%'">
+                            <span th:text="${c.getCategoryName + ' ' + ((c.getTotal().doubleValue() / totalIncome) * 100)} + '%'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Расходы</h5>
+                    <div class="progress bg-dark mb-2"
+                         role="progressbar"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         th:aria-valuenow="${homePercent}">
+                        <div class="progress-bar bg-success"
+                             th:style="'width:' + ${homePercent} + '%'">
+                            <span>Дом</span>
+                        </div>
+                    </div>
+
+                    <div class="progress bg-dark mb-2"
+                         role="progressbar"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         th:aria-valuenow="${healthPercent}">
+                        <div class="progress-bar bg-info"
+                             th:style="'width:' + ${healthPercent} + '%'">
+                            <span>Здоровье</span>
+                        </div>
+                    </div>
+
+                    <div class="progress bg-dark mb-2"
+                         role="progressbar"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         th:aria-valuenow="${foodPercent}">
+                        <div class="progress-bar bg-warning text-dark"
+                             th:style="'width:' + ${foodPercent} + '%'">
+                            <span>Еда</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body d-grid gap-3">
+                    <button sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_READER')"
+                            th:onclick="|location.href='@{/stats/group}'|"
+                            type="button"
+                            class="btn btn-outline-light btn-lg w-100 h-100">
+                        К статистике группы
+                    </button>
+
+                    <button th:onclick="|location.href='@{/stats/group}'|"
+                            type="button"
+                            class="btn btn-light btn-lg w-100 h-100">
+                        Статистика по параметрам
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Прогресс-бары справа -->
+
+    </div>
+
+    <!-- Второй ряд -->
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <table class="table table-dark table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Сумма за период</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="c : ${categoryStatsIncome}">
+                            <td th:text="${c.getCategoryName()}"></td>
+                            <td th:text="${c.getTotal()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <table class="table table-dark table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Сумма за период</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="c : ${categoryStatsExpense}">
+                            <td th:text="${c.getCategoryName()}"></td>
+                            <td th:text="${c.getTotal()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
