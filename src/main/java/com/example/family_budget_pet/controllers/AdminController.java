@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+import java.util.Set;
+
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -29,7 +32,9 @@ public class AdminController {
         Long adminId = admin.getId();
         Group group = groupService.findByAdminId(adminId);
         if (group != null){
-            model.addAttribute("users", group.getUsers());
+            Set<User> users = group.getUsers();
+            users.stream().sorted(Comparator.comparing(User::getId));
+            model.addAttribute("users", users);
             model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");

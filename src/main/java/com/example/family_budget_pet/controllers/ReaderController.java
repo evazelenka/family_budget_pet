@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+import java.util.Set;
+
 @Controller
 @RequestMapping("/reader")
 @PreAuthorize("hasAuthority('ROLE_READER')")
@@ -34,8 +37,9 @@ public class ReaderController {
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User reader = userService.findByUsername(principal.getUsername());
         Group group = groupService.findByUserId(reader.getId()).orElse(null);
-
         if (group != null){
+            Set<User> users = group.getUsers();
+            model.addAttribute("users", users);
             model.addAttribute("users", group.getUsers());
             model.addAttribute("group", group);
         }

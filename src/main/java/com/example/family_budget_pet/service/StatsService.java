@@ -26,7 +26,7 @@ public class StatsService {
 //        return transactionRepository.findGroupStatsByType(groupId);
 //    }
 //
-//    public List<CategoryStats> getGroupStatsByCategory(Long groupId) {
-//        return transactionRepository.findGroupStatsByCategory(groupId);
-//    }
+    public List<CategoryStats> getGroupStatsByCategory(Long groupId) {
+        return transactionRepository.findGroupStatsByCategory(groupId);
+    }
 }

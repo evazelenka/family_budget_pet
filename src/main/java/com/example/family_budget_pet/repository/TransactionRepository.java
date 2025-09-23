@@ -54,13 +54,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 //            "GROUP BY t.category.type")
 //    List<TypeStats> findGroupStatsByType(Long groupId);
 //
-//    @Query("SELECT t.category.name AS categoryName, SUM(t.amount) AS total " +
-//            "FROM Transaction t " +
-//            "JOIN t.user u " +
-//            "JOIN u.groups g " +
-//            "WHERE g.id = :groupId " +
-//            "GROUP BY t.category.name")
-//    List<CategoryStats> findGroupStatsByCategory(Long groupId);
+    @Query("SELECT t.category.name AS categoryName, SUM(t.amount) AS total " +
+            "FROM Transaction t " +
+            "JOIN t.user u " +
+            "JOIN u.group g " +
+            "WHERE g.id = :groupId " +
+            "GROUP BY t.category.name")
+    List<CategoryStats> findGroupStatsByCategory(Long groupId);
 
     @Query("SELECT t FROM Transaction t WHERE t.user.group.id = :groupId")
     List<Transaction> findAllByGroupId(@Param("groupId") Long groupId);

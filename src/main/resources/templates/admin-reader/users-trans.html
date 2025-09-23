@@ -22,25 +22,33 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" th:href="@{/kitty-cash/welcome}">Главная</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/transactions/my}" sec:authorize="isAuthenticated()">Транзакции</a>
+                </li>
                 <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/transactions/my}">Транзакции</a>
+                    <a class="nav-link" th:href="@{/admin/info}" sec:authorize="hasRole('ADMIN')">Профиль</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/info}">Профиль</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/users}">Группа</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/stats}">Статистика</a>
+                    <a class="nav-link" th:href="@{/admin/users}" sec:authorize="hasRole('ADMIN')">Группа</a>
                 </li>
 
+                <!--                Ридер-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reader/users}" sec:authorize="hasRole('READER')">Группа</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/statistics/my}" sec:authorize="isAuthenticated()">Статистика</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
                 </li>
             </ul>
         </div>

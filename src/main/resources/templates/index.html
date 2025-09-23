@@ -23,47 +23,33 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/kitty-cash/welcome}">Главная</a>
                 </li>
-                <!--                Админ-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('ADMIN')">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="isAuthenticated()">Транзакции</a>
                 </li>
+                <!--                Админ-->
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/info}" sec:authorize="hasRole('ADMIN')">Профиль</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/users}" sec:authorize="hasRole('ADMIN')">Группа</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/stats}" sec:authorize="hasRole('ADMIN')">Статистика</a>
-                </li>
 
                 <!--                Юзер-->
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('USER')">Транзакции</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/user/info}" sec:authorize="hasRole('USER')">Профиль</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/stats}" sec:authorize="hasRole('USER')">Статистика</a>
-                </li>
-
                 <!--                Ридер-->
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="hasRole('READER')">Транзакции</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/reader/info}" sec:authorize="hasRole('READER')">Профиль</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/reader/users}" sec:authorize="hasRole('READER')">Группа</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reader/stats}" sec:authorize="hasRole('READER')">Статистика</a>
+                    <a class="nav-link" th:href="@{/statistics/my}" sec:authorize="isAuthenticated()">Статистика</a>
                 </li>
-
-
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
                 </li>
