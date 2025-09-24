@@ -66,9 +66,7 @@
             <div class="col-md-10">
                 <div class="row g-4">
 
-                    <!-- Левый блок (информация) -->
                     <div class="col-md-6">
-                        <!-- твой блок с информацией -->
                         <h5 class="card-title">Статистика по дате</h5>
 
                         <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
@@ -83,11 +81,9 @@
                         </form>
                     </div>
 
-                    <!-- Правый блок (форма) -->
                     <div class="col-md-6">
                         <h5 class="card-title">Статистика по категории</h5>
 
-                        <!-- твоя форма редактирования -->
                         <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
                             <input type="hidden" th:field="*{id}"/>
                             <div class="form-floating mb-3">
@@ -106,7 +102,7 @@
                         </form>
                     </div>
 
-                </div> <!-- /row -->
+                </div>
             </div>
         </div>
     </div>

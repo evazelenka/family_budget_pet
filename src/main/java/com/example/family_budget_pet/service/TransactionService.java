@@ -40,8 +40,10 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction update(Transaction t){
+    public Transaction update(Transaction t, String type){
         Transaction tran = findById(t.getId());
+        Category c = categoryRepository.findByName(type);
+        t.setCategory(c);
         if (t.getAmount() != null){
             tran.setAmount(t.getAmount());
         }

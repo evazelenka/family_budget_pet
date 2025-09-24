@@ -94,4 +94,12 @@ public class UserService {
     public User save(User user){
         return userRepository.save(user);
     }
+
+    @Transactional
+    public void leaveGroup(User reader, Group group) {
+        reader.setGroup(null);
+        group.getUsers().remove(reader);
+        userRepository.save(reader);
+        groupRepository.save(group);
+    }
 }

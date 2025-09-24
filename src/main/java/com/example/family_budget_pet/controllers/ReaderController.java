@@ -40,7 +40,6 @@ public class ReaderController {
         if (group != null){
             Set<User> users = group.getUsers();
             model.addAttribute("users", users);
-            model.addAttribute("users", group.getUsers());
             model.addAttribute("group", group);
         }
         model.addAttribute("title", "Группа");
@@ -61,6 +60,18 @@ public class ReaderController {
             userService.save(reader);
             groupService.addUser(group, reader);
         }
+        return "redirect:/reader/users";
+    }
+
+    @PostMapping("/group/leave")
+    public String leaveGroup( Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
+        User reader = userService.findByUsername(principal.getUsername());
+        Group group = reader.getGroup();
+        if (group == null) {
+            model.addAttribute("error", "Группа не найдена!");
+            return "redirect:/reader/users";
+        }
+        userService.leaveGroup(reader, group);
         return "redirect:/reader/users";
     }
 }

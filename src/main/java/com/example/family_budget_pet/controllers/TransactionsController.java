@@ -59,8 +59,8 @@ public class TransactionsController {
     }
 
     @PostMapping("/update")
-    public String updateTran(@ModelAttribute("transaction") Transaction t){
-        service.update(t);
+    public String updateTran(@ModelAttribute("transaction") Transaction t, @RequestParam String type){
+        service.update(t, type);
         return "redirect:/transactions/my";
     }
 
