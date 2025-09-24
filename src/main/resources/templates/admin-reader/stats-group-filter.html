@@ -23,7 +23,7 @@
                     <a class="nav-link" aria-current="page" th:href="@{/kitty-cash/welcome}">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/transactions/my}" sec:authorize="isAuthenticated()">Транзакции</a>
+                    <a class="nav-link" th:href="@{/transactions/my}" sec:authorize="isAuthenticated()">Транзакции</a>
                 </li>
                 <!--                Админ-->
                 <li class="nav-item">
@@ -47,7 +47,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/statistics/my}" sec:authorize="isAuthenticated()">Статистика</a>
+                    <a class="nav-link active" th:href="@{/statistics/my}" sec:authorize="isAuthenticated()">Статистика</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/kitty-cash/about}">О проекте</a>
@@ -66,41 +66,26 @@
             <div class="col-md-10">
                 <div class="row g-4">
 
-                    <!-- Левый блок (информация) -->
-                    <div class="col-md-6">
-                        <!-- твой блок с информацией -->
-                        <div class="transaction-info card bg-dark text-white shadow-lg" style=" height: 95%; border-radius: 15px; padding: 20px;">
-                            <!-- Вставь свой код здесь -->
-                            <h5 class="card-title">Информация о транзакции</h5>
-                            <h5><br></h5>
-                            <p><strong>ID:</strong> <span th:text="${tran.id}">1</span></p>
-                            <p><strong>Сумма:</strong> <span th:text="${tran.amount}">0</span></p>
-                            <p><strong>Категория:</strong> <span th:text="${tran.category.name}">Дом</span></p>
-                            <p><strong>Описание:</strong> <span th:text="${tran.description}">ivan@example.com</span></p>
-                            <p><strong>Дата:</strong> <span th:text="${tran.date}"></span></p>
-                        </div>
-                    </div>
+                    <div class="col-md-4">
+                        <h5 class="card-title">Статистика по дате</h5>
 
-                    <!-- Правый блок (форма) -->
-                    <div class="col-md-6">
-                        <!-- твоя форма редактирования -->
                         <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
                             <input type="hidden" th:field="*{id}"/>
-                            <div class="mb-3">
-                                <label class="form-label">Сумма</label>
-                                <input type="number" class="form-control" th:field="*{amount}"  min="0" step="10" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="desc" class="form-label">Описание</label>
-                                <input id="desc" type="text" class="form-control" th:field="*{description}" required/>
-                            </div>
                             <div class="form-floating mb-3">
-                                <input type="datetime-local" class="form-control"
+                                <input id="date" type="datetime-local" class="form-control"
                                        th:field="*{date}"
                                        th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
-                                <label class="form-label">Дата</label>
+                                <label for="date">Дата</label>
                             </div>
+                            <button type="submit" class="btn btn-success">Перейти</button>
+                        </form>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h5 class="card-title">Статистика по категории</h5>
+
+                        <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
+                            <input type="hidden" th:field="*{id}"/>
                             <div class="form-floating mb-3">
                                 <select id="type" name="type" class="form-select">
                                     <option value="Зарплата">Зарплата</option>
@@ -113,11 +98,23 @@
                                 <label for="type" class="form-label">Категория</label>
                             </div>
 
-                            <button type="submit" class="btn btn-success">Сохранить изменения</button>
+                            <button type="submit" class="btn btn-success">Перейти</button>
                         </form>
                     </div>
 
-                </div> <!-- /row -->
+                    <div class="col-md-4">
+                        <h5 class="card-title">Статистика по пользователю</h5>
+                        <form th:action="@{/transactions/add}" method="post" th:object="${transaction}">
+                            <input type="hidden" th:field="*{id}"/>
+                            <div class="form-floating mb-3">
+                                <input type="text" id="username" name="username" class="form-control">
+                                <label for="username">Имя</label>
+                            </div>
+                            <button type="submit" class="btn btn-success">Перейти</button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
