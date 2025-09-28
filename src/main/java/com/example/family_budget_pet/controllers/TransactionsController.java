@@ -104,7 +104,7 @@ public class TransactionsController {
     @GetMapping("/group")
     public String showGroupTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User user = userService.findByUsername(principal.getUsername());
-        Group group = groupService.findByUserId(user.getId()).orElse(null);
+        Group group = user.getGroup();
         if (group != null){
             List<Transaction> transactions = service.findAllByGroupId(group.getId());
             model.addAttribute("trans", transactions);

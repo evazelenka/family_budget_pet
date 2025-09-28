@@ -63,7 +63,7 @@
 <div class="container text-center">
     <!-- Заголовок общий -->
     <h2 class="fw-bold text-white mb-4">Статистика моих транзакций</h2>
-
+    <h2 class="fw-bold text-white mb-4" th:text="${parameters} ?: 'За все время'"></h2>
     <!-- Первый ряд -->
     <div class="row mb-4">
         <!-- Таблица слева -->
@@ -125,8 +125,13 @@
 
                     <button th:onclick="|location.href='@{/statistics/my/filter}'|"
                             type="button"
-                            class="btn btn-light btn-lg w-100 h-100">
+                            class="btn btn-outline-light btn-lg w-100 h-100">
                         Статистика по параметрам
+                    </button>
+                    <button th:if="${parameters != null}" th:onclick="|location.href='@{/statistics/my}'|"
+                            type="button"
+                            class="btn btn-primary btn-lg w-100 h-100">
+                        Сбросить фильтры
                     </button>
                 </div>
             </div>
