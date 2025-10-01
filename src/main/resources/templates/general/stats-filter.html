@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${title} ?: 'KittyCash'">KittyCash</title>
+    <title th:text="${title} ?: 'Family Budget'">Family Budget</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -59,51 +59,41 @@
         </div>
     </div>
 </nav>
-
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="row g-4">
-
-                    <div class="col-md-6">
-                        <h5 class="card-title">Статистика по дате</h5>
-
-                        <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
-                            <input type="hidden" th:field="*{id}"/>
-                            <div class="form-floating mb-3">
-                                <input id="date" type="datetime-local" class="form-control"
-                                       th:field="*{date}"
-                                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
-                                <label for="date">Дата</label>
-                            </div>
-                            <button type="submit" class="btn btn-success">Перейти</button>
-                        </form>
-                    </div>
-
-                    <div class="col-md-6">
-                        <h5 class="card-title">Статистика по категории</h5>
-
-                        <form th:action="@{/transactions/update}" th:object="${transaction}" method="post">
-                            <input type="hidden" th:field="*{id}"/>
-                            <div class="form-floating mb-3">
-                                <select id="type" name="type" class="form-select">
-                                    <option value="Зарплата">Зарплата</option>
-                                    <option value="Возврат долгов">Возврат долгов</option>
-                                    <option value="Пассивный доход">Пассивный доход</option>
-                                    <option value="Дом">Дом</option>
-                                    <option value="Здоровье">Здоровье</option>
-                                    <option value="Еда">Еда</option>
-                                </select>
-                                <label for="type" class="form-label">Категория</label>
-                            </div>
-
-                            <button type="submit" class="btn btn-success">Перейти</button>
-                        </form>
-                    </div>
-
-                </div>
+    <div class="w-100" style="max-width: 400px;">
+        <form sec:authorize="!isAuthenticated()"  th:action="@{/auth/register}" th:object="${user}" method="post">
+            <h1 class="h3 mb-3 fw-bold text-white">Фильтрация</h1>
+            <div class="form-floating mb-3">
+                <select id="type" name="type" class="form-select">
+                    <option value="без">-</option>
+                    <option value="Зарплата">Зарплата</option>
+                    <option value="Возврат долгов">Возврат долгов</option>
+                    <option value="Пассивный доход">Пассивный доход</option>
+                    <option value="Дом">Дом</option>
+                    <option value="Здоровье">Здоровье</option>
+                    <option value="Еда">Еда</option>
+                </select>
+                <label for="type" class="form-label">Категория</label>
             </div>
+            <div class="form-floating mb-3">
+                <input id="dateStart" type="datetime-local" class="form-control"
+                       th:field="*{date}"
+                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
+                <label for="dateStart">Период от:</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input id="dateEnd" type="datetime-local" class="form-control"
+                       th:field="*{date}"
+                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
+                <label for="dateEnd">Период до:</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2">Перейти</button>
+        </form>
+
+        <!-- Ошибки общего характера -->
+        <div th:if="${error}">
+            <p class="error" th:text="${error}"></p>
         </div>
     </div>
 </main>
