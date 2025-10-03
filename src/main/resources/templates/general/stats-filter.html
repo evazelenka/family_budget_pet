@@ -61,7 +61,7 @@
 </nav>
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
     <div class="w-100" style="max-width: 400px;">
-        <form sec:authorize="!isAuthenticated()"  th:action="@{/auth/register}" th:object="${user}" method="post">
+        <form th:action="@{/my/filter}" method="post">
             <h1 class="h3 mb-3 fw-bold text-white">Фильтрация</h1>
             <div class="form-floating mb-3">
                 <select id="type" name="type" class="form-select">
@@ -77,14 +77,15 @@
             </div>
             <div class="form-floating mb-3">
                 <input id="dateStart" type="datetime-local" class="form-control"
-                       th:field="*{date}"
-                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
+                       name="dateStart"
+                       th:max="${#temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd''T''HH:mm')}" />
                 <label for="dateStart">Период от:</label>
             </div>
+
             <div class="form-floating mb-3">
                 <input id="dateEnd" type="datetime-local" class="form-control"
-                       th:field="*{date}"
-                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
+                       name="dateEnd"
+                       th:max="${#temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd''T''HH:mm')}" />
                 <label for="dateEnd">Период до:</label>
             </div>
 

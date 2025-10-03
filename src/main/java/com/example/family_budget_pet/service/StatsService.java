@@ -6,6 +6,8 @@ import com.example.family_budget_pet.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,5 +30,9 @@ public class StatsService {
 //
     public List<CategoryStats> getGroupStatsByCategory(Long groupId) {
         return transactionRepository.findGroupStatsByCategory(groupId);
+    }
+
+    public List<CategoryStats> getFilterStats(String username, String type, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        return new ArrayList<CategoryStats>();
     }
 }

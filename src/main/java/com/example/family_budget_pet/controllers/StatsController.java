@@ -12,11 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -44,6 +43,28 @@ public class StatsController {
             model.addAttribute("categoryStatsIncome", income);
 
         }
+        return "general/stats";
+    }
+
+    @GetMapping("/my/filter")
+    public String getFilterPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        model.addAttribute("title", "Статистика");
+        return "general/stats-filter";
+    }
+
+    @PostMapping("/my/filter")
+    public String getFilterStats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model, @RequestParam String type, @RequestParam LocalDateTime dateStart, @RequestParam LocalDateTime dateEnd){
+        if (dateStart.isAfter(dateEnd)) {
+//            throw new IllegalArgumentException();
+            model.addAttribute("error", "Дата начала не может быть позже даты окончания");
+            return "general/stats-filter";
+        }
+        if (dateStart.isAfter(LocalDateTime.now()) || dateEnd.isAfter(LocalDateTime.now())) {
+//            throw new IllegalArgumentException();
+            model.addAttribute("error", "Даты не могут быть позже текущего времени");
+            return "general/stats-filter";
+        }
+        statsService.getFilterStats(principal.getUsername(), type, dateStart, dateEnd);
         return "general/stats";
     }
 
