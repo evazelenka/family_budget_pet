@@ -4,13 +4,14 @@ import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.dto.CategoryStats;
 import com.example.family_budget_pet.domain.dto.TypeStats;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<CategoryStats> {
 
 //     ====== Пользователь ======
     @Query("SELECT t.category.type AS type, SUM(t.amount) AS total " +
@@ -53,16 +54,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     FROM Transaction t
     LEFT JOIN t.category c
     JOIN t.user u
-    WHERE (COALESCE(:username, u.username) = u.username)
-      AND ((:categoryName IS NULL AND c IS NULL) OR COALESCE(:categoryName, c.name) = c.name)
-      AND (COALESCE(:dateStart, t.date) <= t.date)
-      AND (COALESCE(:dateEnd, t.date) >= t.date)
+    WHERE (:username IS NULL OR u.username = :username)
+      AND (:categoryId IS NULL OR c.id = :categoryId)
+      AND (:dateStart IS NULL OR t.date >= :dateStart)
+      AND (:dateEnd IS NULL OR t.date <= :dateEnd)
     GROUP BY c.name, t.date
     ORDER BY t.date DESC
 """)
     List<CategoryStats> findFilteredStats(
             @Param("username") String username,
-            @Param("categoryName") String categoryName,
+            @Param("categoryId") Long categoryId,
             @Param("dateStart") LocalDateTime dateStart,
             @Param("dateEnd") LocalDateTime dateEnd
     );

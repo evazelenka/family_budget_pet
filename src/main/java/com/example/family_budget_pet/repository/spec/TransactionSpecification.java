@@ -13,7 +13,6 @@ import java.util.List;
 public class TransactionSpecification {
 
     public static Specification<Transaction> filter(
-            BigDecimal amount,
             Long categoryId,
             Long userId,
             LocalDateTime startDate,
@@ -22,9 +21,6 @@ public class TransactionSpecification {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (amount != null) {
-                predicates.add((Predicate) cb.equal(root.get("amount"), amount));
-            }
             if (categoryId != null) {
                 predicates.add((Predicate) cb.equal(root.get("category").get("id"), categoryId));
             }
