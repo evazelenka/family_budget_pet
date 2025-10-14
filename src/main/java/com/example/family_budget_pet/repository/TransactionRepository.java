@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
@@ -44,4 +45,25 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT t FROM Transaction t WHERE t.user.group.id = :groupId")
     List<Transaction> findAllByGroupId(@Param("groupId") Long groupId);
+
+    @Query("""
+    SELECT c.name AS categoryName,
+           SUM(t.amount) AS total,
+           t.date AS date
+    FROM Transaction t
+    LEFT JOIN t.category c
+    JOIN t.user u
+    WHERE (COALESCE(:username, u.username) = u.username)
+      AND ((:categoryName IS NULL AND c IS NULL) OR COALESCE(:categoryName, c.name) = c.name)
+      AND (COALESCE(:dateStart, t.date) <= t.date)
+      AND (COALESCE(:dateEnd, t.date) >= t.date)
+    GROUP BY c.name, t.date
+    ORDER BY t.date DESC
+""")
+    List<CategoryStats> findFilteredStats(
+            @Param("username") String username,
+            @Param("categoryName") String categoryName,
+            @Param("dateStart") LocalDateTime dateStart,
+            @Param("dateEnd") LocalDateTime dateEnd
+    );
 }

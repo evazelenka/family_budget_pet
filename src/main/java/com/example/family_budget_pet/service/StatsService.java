@@ -32,7 +32,7 @@ public class StatsService {
         return transactionRepository.findGroupStatsByCategory(groupId);
     }
 
-    public List<CategoryStats> getFilterStats(String username, String type, LocalDateTime dateStart, LocalDateTime dateEnd) {
-        return new ArrayList<CategoryStats>();
+    public List<CategoryStats> getFilterStats(String username, String categoryName, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        return transactionRepository.findFilteredStats(username, categoryName, dateStart, dateEnd);
     }
 }

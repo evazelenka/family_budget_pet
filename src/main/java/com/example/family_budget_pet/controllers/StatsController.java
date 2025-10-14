@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,7 +42,6 @@ public class StatsController {
             model.addAttribute("totalIncome", totalIncome);
             model.addAttribute("categoryStatsExpense", expense);
             model.addAttribute("categoryStatsIncome", income);
-
         }
         return "general/stats";
     }
@@ -53,18 +53,41 @@ public class StatsController {
     }
 
     @PostMapping("/my/filter")
-    public String getFilterStats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model, @RequestParam String type, @RequestParam LocalDateTime dateStart, @RequestParam LocalDateTime dateEnd){
-        if (dateStart.isAfter(dateEnd)) {
-//            throw new IllegalArgumentException();
-            model.addAttribute("error", "Дата начала не может быть позже даты окончания");
-            return "general/stats-filter";
+    public String getFilterStats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model, @RequestParam(required = false) String categoryName, @RequestParam(required = false) LocalDateTime dateStart, @RequestParam(required = false) LocalDateTime dateEnd){
+
+        StringBuilder parameters = new StringBuilder();
+        List<CategoryStats> categoryStats = new ArrayList<>();
+
+        if (dateStart != null && dateEnd != null){
+            if (dateStart.isAfter(dateEnd)) {
+    //            throw new IllegalArgumentException();
+                model.addAttribute("error", "Дата начала не может быть позже даты окончания");
+                return "general/stats-filter";
+            }
+            if (dateStart.isAfter(LocalDateTime.now()) || dateEnd.isAfter(LocalDateTime.now())) {
+    //            throw new IllegalArgumentException();
+                model.addAttribute("error", "Даты не могут быть позже текущего времени");
+                return "general/stats-filter";
+            }
+            parameters.append("Период с " + dateStart.toLocalDate() + " до " + dateEnd.toLocalDate() + ", ");
         }
-        if (dateStart.isAfter(LocalDateTime.now()) || dateEnd.isAfter(LocalDateTime.now())) {
-//            throw new IllegalArgumentException();
-            model.addAttribute("error", "Даты не могут быть позже текущего времени");
-            return "general/stats-filter";
+        if (!categoryName.equals("-")){
+            parameters.append("Категория: " + categoryName);
+            categoryStats = statsService.getFilterStats(principal.getUsername(), categoryName, dateStart, dateEnd);
+        }else categoryStats = statsService.getFilterStats(principal.getUsername(), null, dateStart, dateEnd);
+
+        if (categoryStats != null){
+            List<CategoryStats> expense = categoryStats.stream().filter(c -> categoryService.findByName(c.getCategoryName()).getType().equals(CategoryType.EXPENSE)).toList();
+            List<CategoryStats> income = categoryStats.stream().filter(c -> categoryService.findByName(c.getCategoryName()).getType().equals(CategoryType.INCOME)).toList();
+            BigDecimal totalExpense = expense.stream().map(CategoryStats::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+            System.out.println("total expense: " + totalExpense);
+            BigDecimal totalIncome = income.stream().map(CategoryStats::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+            model.addAttribute("parameters", parameters);
+            model.addAttribute("totalExpense", totalExpense);
+            model.addAttribute("totalIncome", totalIncome);
+            model.addAttribute("categoryStatsExpense", expense);
+            model.addAttribute("categoryStatsIncome", income);
         }
-        statsService.getFilterStats(principal.getUsername(), type, dateStart, dateEnd);
         return "general/stats";
     }
 

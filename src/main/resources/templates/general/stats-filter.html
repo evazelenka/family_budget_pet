@@ -61,11 +61,11 @@
 </nav>
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
     <div class="w-100" style="max-width: 400px;">
-        <form th:action="@{/my/filter}" method="post">
+        <form th:action="@{/statistics/my/filter}" method="post">
             <h1 class="h3 mb-3 fw-bold text-white">Фильтрация</h1>
             <div class="form-floating mb-3">
-                <select id="type" name="type" class="form-select">
-                    <option value="без">-</option>
+                <select id="type" name="categoryName" class="form-select">
+                    <option value="-">-</option>
                     <option value="Зарплата">Зарплата</option>
                     <option value="Возврат долгов">Возврат долгов</option>
                     <option value="Пассивный доход">Пассивный доход</option>
