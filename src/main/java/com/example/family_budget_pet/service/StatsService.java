@@ -63,14 +63,15 @@ public class StatsService {
             predicates.add(cb.lessThanOrEqualTo(root.get("date"), endDate));
         }
 
-        // группировка по категории и дате
+        // группировка по категории
         query.multiselect(
                         root.get("category").get("name").alias("categoryName"),
                         cb.sum(root.get("amount")).alias("total"),
-                        root.get("date").alias("date")
+                        cb.max(root.get("date")).alias("latestDate")
                 )
                 .where(cb.and(predicates.toArray(new Predicate[0])))
-                .groupBy(root.get("category").get("name"), root.get("date"));
+                .groupBy(root.get("category").get("name"));
+
 
         List<Tuple> tuples = entityManager.createQuery(query).getResultList();
 
