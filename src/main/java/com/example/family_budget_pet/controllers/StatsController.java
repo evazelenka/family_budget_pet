@@ -53,7 +53,11 @@ public class StatsController {
     }
 
     @PostMapping("/my/filter")
-    public String getFilterStats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model, @RequestParam(required = false) String categoryName, @RequestParam(required = false) LocalDateTime dateStart, @RequestParam(required = false) LocalDateTime dateEnd){
+    public String getFilterStats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal,
+                                 Model model,
+                                 @RequestParam(required = false) String categoryName,
+                                 @RequestParam(required = false) LocalDateTime dateStart,
+                                 @RequestParam(required = false) LocalDateTime dateEnd){
 
         StringBuilder parameters = new StringBuilder();
         List<CategoryStats> categoryStats = new ArrayList<>();
@@ -73,8 +77,10 @@ public class StatsController {
         }
         if (!categoryName.equals("-")){
             parameters.append("Категория: " + categoryName);
-            categoryStats = statsService.getFilterStats(principal.getUsername(), categoryName, dateStart, dateEnd);
-        }else categoryStats = statsService.getFilterStats(principal.getUsername(), null, dateStart, dateEnd);
+        }else categoryName = null;
+
+        categoryStats = statsService.getCategoryStats(categoryName, principal.getUsername(), dateStart, dateEnd);
+
 
         if (categoryStats != null){
             List<CategoryStats> expense = categoryStats.stream().filter(c -> categoryService.findByName(c.getCategoryName()).getType().equals(CategoryType.EXPENSE)).toList();
