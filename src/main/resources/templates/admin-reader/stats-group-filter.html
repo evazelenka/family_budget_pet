@@ -56,16 +56,18 @@
 </nav>
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
     <div class="w-100" style="max-width: 400px;">
-        <form sec:authorize="!isAuthenticated()"  th:action="@{/auth/register}" th:object="${user}" method="post">
+        <form th:action="@{/statistics/group/filter}" method="post">
             <h1 class="h3 mb-3 fw-bold text-white">Фильтрация</h1>
             <div class="form-floating mb-3">
-                <input id="floatingInput" class="form-control" type="text" th:field="*{username}" required>
-                <label for="floatingInput">Имя пользователя</label>
-<!--                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br>-->
+                <select id="username" name="username" class="form-select">
+                    <option value="-">-</option>
+                    <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+                </select>
+                <label for="username" class="form-label">Имя пользователя</label>
             </div>
             <div class="form-floating mb-3">
-                <select id="type" name="type" class="form-select">
-                    <option value="без">-</option>
+                <select id="type" name="categoryName" class="form-select">
+                    <option value="-">-</option>
                     <option value="Зарплата">Зарплата</option>
                     <option value="Возврат долгов">Возврат долгов</option>
                     <option value="Пассивный доход">Пассивный доход</option>
@@ -77,15 +79,16 @@
             </div>
             <div class="form-floating mb-3">
                 <input id="dateStart" type="datetime-local" class="form-control"
-                       th:field="*{date}"
-                       th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
+                       name="dateStart"
+                       th:max="${#temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd''T''HH:mm')}" />
                 <label for="dateStart">Период от:</label>
             </div>
+
             <div class="form-floating mb-3">
-            <input id="dateEnd" type="datetime-local" class="form-control"
-                   th:field="*{date}"
-                   th:value="${transaction.date != null} ? ${#temporals.format(transaction.date, 'yyyy-MM-dd''T''HH:mm')} : ''"/>
-            <label for="dateEnd">Период до:</label>
+                <input id="dateEnd" type="datetime-local" class="form-control"
+                       name="dateEnd"
+                       th:max="${#temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd''T''HH:mm')}" />
+                <label for="dateEnd">Период до:</label>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 py-2">Перейти</button>

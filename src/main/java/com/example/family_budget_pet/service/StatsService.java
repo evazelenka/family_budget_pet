@@ -1,10 +1,12 @@
 package com.example.family_budget_pet.service;
 
 import com.example.family_budget_pet.domain.Category;
+import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.domain.dto.CategoryStats;
 import com.example.family_budget_pet.domain.dto.TypeStats;
+import com.example.family_budget_pet.domain.enums.CategoryType;
 import com.example.family_budget_pet.repository.CategoryRepository;
 import com.example.family_budget_pet.repository.TransactionRepository;
 import com.example.family_budget_pet.repository.UserRepository;
@@ -106,10 +108,6 @@ public class StatsService {
         return transactionRepository.findUserStatsByCategory(userId);
     }
 
-//    public List<TypeStats> getGroupStatsByType(Long groupId) {
-//        return transactionRepository.findGroupStatsByType(groupId);
-//    }
-//
     public List<CategoryStats> getGroupStatsByCategory(Long groupId) {
         return transactionRepository.findGroupStatsByCategory(groupId);
     }
@@ -120,5 +118,52 @@ public class StatsService {
             return transactionRepository.findFilteredStats(username, c.getId(), dateStart, dateEnd);
         }
         return transactionRepository.findFilteredStats(username, null, dateStart, dateEnd);
+    }
+
+    public String getParametersString(String categoryName, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        StringBuilder parameters = new StringBuilder();
+
+        parameters.append("Период с ").append(dateStart != null ? dateStart.toLocalDate() : "-").append(" до ").append(dateEnd != null ? dateEnd.toLocalDate() : LocalDateTime.now().toLocalDate()).append(" ");
+
+        if (!categoryName.equals("-")){
+            parameters.append("Категория: ").append(categoryName);
+        }
+        return parameters.toString();
+    }
+
+    public List<CategoryStats> getExpenseFromCategoryStats(List<CategoryStats> categoryStats) {
+        return categoryStats
+                .stream()
+                .filter(c -> categoryRepository.findByName(c.getCategoryName())
+                                .getType().equals(CategoryType.EXPENSE)).toList();
+    }
+
+    public List<CategoryStats> getIncomeFromCategoryStats(List<CategoryStats> categoryStats) {
+        return categoryStats
+                .stream()
+                .filter(c -> categoryRepository.findByName(c.getCategoryName())
+                        .getType().equals(CategoryType.INCOME)).toList();
+    }
+
+    public BigDecimal getTotalFromCategoryStats(List<CategoryStats> categoryStats) {
+        return categoryStats
+                .stream()
+                .map(CategoryStats::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public List<CategoryStats> getGroupCategoryStats(
+            String categoryName,
+            Long groupId,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        if (categoryName.equals("-")) return transactionRepository.findGroupStatsByCategoryAndDateRange(groupId, startDate, endDate);
+        else {
+            CategoryStats categoryStats = transactionRepository.findGroupStatsByCategoryAndDateRange(groupId, startDate, endDate).stream().filter(c -> c.getCategoryName().equals(categoryName)).findFirst().orElse(null);
+            List<CategoryStats> result = new ArrayList<>();
+            result.add(categoryStats);
+            return result;
+        }
     }
 }

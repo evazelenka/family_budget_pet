@@ -67,4 +67,23 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
             @Param("dateStart") LocalDateTime dateStart,
             @Param("dateEnd") LocalDateTime dateEnd
     );
+
+    @Query("""
+    SELECT 
+        t.category.name AS categoryName,
+        COALESCE(SUM(t.amount), 0) AS total
+    FROM Transaction t
+    JOIN t.user u
+    JOIN u.group g
+    WHERE g.id = :groupId
+      AND t.date >= COALESCE(:startDate, t.date)
+      AND t.date <= COALESCE(:endDate, t.date)
+    GROUP BY t.category.name
+    ORDER BY t.category.name
+""")
+    List<CategoryStats> findGroupStatsByCategoryAndDateRange(
+            @Param("groupId") Long groupId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
 }
