@@ -6,7 +6,6 @@ import com.example.family_budget_pet.repository.GroupRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -19,6 +18,12 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
+    /**
+     * Метод создания группы администратором.
+     * @param groupName название группы
+     * @param admin имя админа
+     * @return сохраненная группа
+     */
     @Transactional
     public Group save(String groupName, User admin){
         Group group = Group.builder()
@@ -29,20 +34,41 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    /**
+     * Метод добавления пользователя в группу.
+     * @param group группа
+     * @param user пользователь
+     */
     @Transactional
     public void addUser(Group group, User user){
         group.addUser(user);
         groupRepository.save(group);
     }
 
+    /**
+     * Метод поиска группы по токену.
+     * @param token токен группы
+     * @return найденная группа
+     */
     public Group findByToken(String token){
         return groupRepository.findByToken(token).orElse(null);
     }
 
+    /**
+     * Метод поиска группы по Id админа группы.
+     * @param adminId Id админа
+     * @return найденная группа
+     */
     public Group findByAdminId(Long adminId){
         return groupRepository.findByAdmin_Id(adminId).orElse(null);
     }
 
+    /**
+     * Метод генерации токена для новой группы.
+     * @param rawAdminPart данные(имя) админа
+     * @param rawGroupPart данные(название) группы
+     * @return уникальный токен группы
+     */
     public String generateToken(String rawAdminPart, String rawGroupPart){
         String[] adminPart = rawAdminPart.split("");
         String[] groupPart = rawGroupPart.split("");
@@ -57,14 +83,20 @@ public class GroupService {
         return result.toString();
     }
 
-    public void deleteGroup(Group group){
-        groupRepository.delete(group);
-    }
-
+    /**
+     * Метод поиска группы по Id пользователя.
+     * @param userId Id пользователя
+     * @return группа
+     */
     public Optional<Group> findByUserId(Long userId){
         return groupRepository.findByUserId(userId);
     }
 
+    /**
+     * Метод поиска группы по её названию.
+     * @param groupName название группы
+     * @return группа
+     */
     public Group findByGroupName(String groupName){
         return groupRepository.findByGroupName(groupName).orElse(null);
     }

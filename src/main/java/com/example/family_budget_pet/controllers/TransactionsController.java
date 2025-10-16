@@ -77,20 +77,6 @@ public class TransactionsController {
 
     @GetMapping("/my")
     public String showMyTransactions(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
-//        Category home = Category.builder().name("Дом").type(CategoryType.EXPENSE).build();
-//        Category health = Category.builder().name("Здоровье").type(CategoryType.EXPENSE).build();
-//        Category food = Category.builder().name("Еда").type(CategoryType.EXPENSE).build();
-//        Category salary = Category.builder().name("Зарплата").type(CategoryType.INCOME).build();
-//        Category debt_back = Category.builder().name("Возврат долгов").type(CategoryType.INCOME).build();
-//        Category passive = Category.builder().name("Пассивный доход").type(CategoryType.INCOME).build();
-//       categoryService.deleteById(7L);
-//       categoryService.deleteById(8L);
-//       categoryService.deleteById(9L);
-//       categoryService.deleteById(10L);
-//       categoryService.deleteById(11L);
-//       categoryService.deleteById(12L);
-
-
         User user = userService.findByUsername(principal.getUsername());
         List<Transaction> transactions = user.getTransactions();
         if (transactions != null){

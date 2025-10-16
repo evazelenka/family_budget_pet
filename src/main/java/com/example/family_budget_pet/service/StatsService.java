@@ -112,14 +112,6 @@ public class StatsService {
         return transactionRepository.findGroupStatsByCategory(groupId);
     }
 
-    public List<CategoryStats> getFilterStats(String username, String categoryName, LocalDateTime dateStart, LocalDateTime dateEnd) {
-        Category c = categoryRepository.findByName(categoryName);
-        if (c != null){
-            return transactionRepository.findFilteredStats(username, c.getId(), dateStart, dateEnd);
-        }
-        return transactionRepository.findFilteredStats(username, null, dateStart, dateEnd);
-    }
-
     public String getParametersString(String categoryName, LocalDateTime dateStart, LocalDateTime dateEnd) {
         StringBuilder parameters = new StringBuilder();
 

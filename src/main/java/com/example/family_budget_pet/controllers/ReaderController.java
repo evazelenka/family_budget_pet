@@ -3,7 +3,6 @@ package com.example.family_budget_pet.controllers;
 import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.service.GroupService;
-import com.example.family_budget_pet.service.ReaderService;
 import com.example.family_budget_pet.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +20,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class ReaderController {
 
-    private final ReaderService service;
     private final UserService userService;
     private final GroupService groupService;
 
