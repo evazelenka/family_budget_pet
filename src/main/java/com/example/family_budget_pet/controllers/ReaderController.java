@@ -44,23 +44,6 @@ public class ReaderController {
         return "admin-reader/users";
     }
 
-    @PostMapping("/group/join")
-    public String joinGroup(@RequestParam(required = false) String groupToken, Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
-        User reader = userService.findByUsername(principal.getUsername());
-        Group group;
-        if (groupToken.startsWith("token")){
-           group = groupService.findByToken(groupToken);
-            if (group == null) {
-                model.addAttribute("error", "Группа с таким токеном не найдена!");
-                return "redirect:/reader/users";
-            }
-            reader.setGroup(group);
-            userService.save(reader);
-            groupService.addUser(group, reader);
-        }
-        return "redirect:/reader/users";
-    }
-
     @PostMapping("/group/leave")
     public String leaveGroup( Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
         User reader = userService.findByUsername(principal.getUsername());
@@ -70,6 +53,6 @@ public class ReaderController {
             return "redirect:/reader/users";
         }
         userService.leaveGroup(reader, group);
-        return "redirect:/reader/users";
+        return "redirect:/user/info";
     }
 }

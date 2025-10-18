@@ -51,6 +51,18 @@ public class UserController {
         return "redirect:/user/info";
     }
 
+    @PostMapping("/group/leave")
+    public String leaveGroup( Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
+        User user = userService.findByUsername(principal.getUsername());
+        Group group = user.getGroup();
+        if (group == null) {
+            model.addAttribute("error", "Группа не найдена!");
+            return "redirect:/reader/users";
+        }
+        userService.leaveGroup(user, group);
+        return "redirect:/reader/users";
+    }
+
 //    @PostMapping("/change-role")
 //    public String changeMyRole(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
 //        User user = userService.findByUsername(principal.getUsername());

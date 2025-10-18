@@ -120,15 +120,7 @@
                     <button type="submit">Покинуть группу</button>
                 </form>
             </div>
-
-            <div th:unless="${group != null}">
-                <form th:action="@{/reader/group/join}" method="post"
-                      sec:authorize="hasRole('READER')">
-                    <label for="groupToken">Токен группы:</label>
-                    <input type="text" id="groupToken" name="groupToken" required>
-                    <button type="submit">Подключиться по токену</button>
-                </form>
-            </div>
+            0
         </div>
     </div>
 </main>

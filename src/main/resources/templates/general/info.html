@@ -207,14 +207,7 @@
                 <button type="submit">Подключиться по токену</button>
             </form>
         </div>
-        <div sec:authorize="hasRole('READER')" th:unless="${user.group != null}">
-            <form th:action="@{/reader/group/join}" method="post">
-                <label for="groupToken2">Токен группы:</label>
-                <input type="text" id="groupToken2" name="groupToken" required>
-                <button type="submit">Подключиться по токену</button>
-            </form>
-        </div>
-        <div sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_READER')" th:if="${user.group != null}">
+        <div sec:authorize="hasRole('ROLE_USER')" th:if="${user.group != null}">
             <form th:action="@{/user/group/leave}" method="post">
                 <button type="submit">Покинуть группу</button>
             </form>
