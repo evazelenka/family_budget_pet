@@ -1,7 +1,6 @@
 package com.example.family_budget_pet.service;
 
 import com.example.family_budget_pet.domain.Category;
-import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.domain.dto.CategoryStats;

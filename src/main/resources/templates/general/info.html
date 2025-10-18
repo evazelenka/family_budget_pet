@@ -214,11 +214,16 @@
                 <button type="submit">Подключиться по токену</button>
             </form>
         </div>
-        <div sec:authorize="hasRole('USER')" th:if="${user.group != null}">
+        <div sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_READER')" th:if="${user.group != null}">
             <form th:action="@{/user/group/leave}" method="post">
                 <button type="submit">Покинуть группу</button>
             </form>
         </div>
+<!--        <div sec:authorize="hasRole('USER')" th:unless="${user.group != null}">-->
+<!--            <form th:action="@{/user/group/leave}" method="post">-->
+<!--                <button type="submit">Переключить роль</button>-->
+<!--            </form>-->
+<!--        </div>-->
         <div th:unless="${user.group != null}" sec:authorize="hasRole('ADMIN')">
             <form th:action="@{/admin/group/create}" method="post">
                 <label for="groupName">Название группы:</label>

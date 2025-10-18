@@ -50,4 +50,13 @@ public class UserController {
         }
         return "redirect:/user/info";
     }
+
+//    @PostMapping("/change-role")
+//    public String changeMyRole(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
+//        User user = userService.findByUsername(principal.getUsername());
+//        if (user.getRole().equals("ROLE_ADMIN")){
+//
+//        }
+//        return "redirect:/user/info";
+//    }
 }

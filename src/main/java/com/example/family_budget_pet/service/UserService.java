@@ -58,22 +58,9 @@ public class UserService {
         String roleName = (mode.equals("admin"))
                 ? "ROLE_ADMIN" : "ROLE_USER";
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException(roleName));
-        System.out.println("____________________________________");
-        System.out.println(role + " " + roleName);
-        System.out.println("------------------------------------");
         user.setRole(role);
         return userRepository.save(user);
     }
-
-//    @Transactional
-//    public void deleteGroup(Long adminId){
-//        User admin = userRepository.findById(adminId).orElse(null);
-//        Group group = groupRepository.findByAdmin_Id(adminId).orElse(null);
-//        if (admin != null && group != null){
-//            admin.setGroup(null);
-//            groupRepository.delete(group);
-//        }
-//    }
 
     @Transactional
     public void deleteGroup(Long adminId) {
