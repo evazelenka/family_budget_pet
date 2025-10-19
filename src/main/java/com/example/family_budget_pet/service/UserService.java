@@ -31,59 +31,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
-    private final PasswordEncoder passwordEncoder; // например BCryptPasswordEncoder
     private final MyUserDetailsService userDetailsService;
 
     public User findByUsername(String username){
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    public List<User> findAll(){
-        return userRepository.findAll();
-    }
 
-    @Transactional
-    public User updateRole(Long userId, String newRole){
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("пользователь " + userId + " не найден"));
-        Role role = roleRepository.findByName(newRole).orElseThrow(() -> new RoleNotFoundException(newRole + " не найдена"));
-        if (role != null){
-            user.setRole(role);
-        }
-        userRepository.save(user);
-        return user;
-    }
-
-    public Set<User> findByAdminGroupId(Long adminId){
-        Group group = groupRepository.findByAdmin_Id(adminId).orElse(null);
-        if (group == null) return null;
-        Set<User> users = group.getUsers();
-        return users;
-    }
-
-    @Transactional
-    public User register(User user, String mode) {
-        // Шифруем пароль
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // Определяем роль
-        String roleName = (mode.equals("admin"))
-                ? "ROLE_ADMIN" : "ROLE_USER";
-        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException(roleName + " не найдена"));
-        user.setRole(role);
-        return userRepository.save(user);
-    }
-
-    @Transactional
-    public void deleteGroup(Long adminId) {
-        Group group = groupRepository.findByAdmin_Id(adminId)
-                .orElseThrow(() -> new GroupNotFoundException("группа админа " + adminId + " не найдена"));
-
-        for (User user : group.getUsers()) {
-            user.setGroup(null);
-            userRepository.save(user);
-        }
-
-        groupRepository.delete(group);
-    }
 
     @Transactional
     public User save(User user){

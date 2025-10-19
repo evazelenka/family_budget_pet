@@ -2,10 +2,7 @@ package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.*;
 import com.example.family_budget_pet.exceptions.UserNotFoundException;
-import com.example.family_budget_pet.service.CategoryService;
-import com.example.family_budget_pet.service.GroupService;
-import com.example.family_budget_pet.service.TransactionService;
-import com.example.family_budget_pet.service.UserService;
+import com.example.family_budget_pet.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +20,7 @@ import java.util.Set;
 public class AdminController {
 
     private final UserService userService;
+    private final AdminService adminService;
     private final GroupService groupService;
     private final TransactionService tService;
     private final CategoryService cService;
@@ -45,7 +43,7 @@ public class AdminController {
     @PostMapping("/users/{id}/role")
     public String changeRole(@PathVariable Long id, @RequestParam String role, Model model){
         try {
-            userService.updateRole(id, role);
+            adminService.updateRole(id, role);
         } catch (UserNotFoundException e) {
             model.addAttribute("error", "Что-то пошло не так... Обновите страницу.");
             return "redirect:/admin/users";
@@ -80,7 +78,7 @@ public class AdminController {
     @PostMapping("/group/delete")
     public String deleteGroup(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
-        userService.deleteGroup(admin.getId());
+        adminService.deleteGroup(admin.getId());
         return "redirect:/admin/users";
     }
 }
