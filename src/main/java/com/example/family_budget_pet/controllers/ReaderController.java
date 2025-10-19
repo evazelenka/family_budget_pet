@@ -34,7 +34,7 @@ public class ReaderController {
     @GetMapping("/users")
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User reader = userService.findByUsername(principal.getUsername());
-        Group group = groupService.findByUserId(reader.getId()).orElse(null);
+        Group group = groupService.findByUserId(reader.getId());
         if (group != null){
             Set<User> users = group.getUsers();
             model.addAttribute("users", users);
@@ -52,7 +52,7 @@ public class ReaderController {
             model.addAttribute("error", "Группа не найдена!");
             return "redirect:/reader/users";
         }
-        userService.leaveGroup(reader, group);
+        groupService.leaveGroup(reader, group);
         return "redirect:/user/info";
     }
 }

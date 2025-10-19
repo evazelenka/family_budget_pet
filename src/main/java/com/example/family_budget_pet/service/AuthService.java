@@ -14,11 +14,16 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AuthService {
 
-    private final PasswordEncoder passwordEncoder; // например BCryptPasswordEncoder
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-
+    /**
+     * Метод регистрации пользователя, внесения его данных в базу.
+     * @param user пользователь
+     * @param mode метод регистрации(админ/обычный пользователь)
+     * @return пользователь сохраненный в БД
+     */
     @Transactional
     public User register(User user, String mode) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
     private  final GroupService groupService;
     private final AuthService authService;
 

@@ -20,7 +20,6 @@ import java.util.Set;
 public class AdminController {
 
     private final UserService userService;
-    private final AdminService adminService;
     private final GroupService groupService;
     private final TransactionService tService;
     private final CategoryService cService;
@@ -43,7 +42,7 @@ public class AdminController {
     @PostMapping("/users/{id}/role")
     public String changeRole(@PathVariable Long id, @RequestParam String role, Model model){
         try {
-            adminService.updateRole(id, role);
+            userService.updateRole(id, role);
         } catch (UserNotFoundException e) {
             model.addAttribute("error", "Что-то пошло не так... Обновите страницу.");
             return "redirect:/admin/users";
@@ -78,7 +77,7 @@ public class AdminController {
     @PostMapping("/group/delete")
     public String deleteGroup(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
-        adminService.deleteGroup(admin.getId());
+        groupService.deleteGroup(admin.getId());
         return "redirect:/admin/users";
     }
 }

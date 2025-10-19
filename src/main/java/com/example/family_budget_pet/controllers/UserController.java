@@ -59,7 +59,7 @@ public class UserController {
             model.addAttribute("error", "Группа не найдена!");
             return "redirect:/reader/users";
         }
-        userService.leaveGroup(user, group);
+        groupService.leaveGroup(user, group);
         return "redirect:/reader/users";
     }
 

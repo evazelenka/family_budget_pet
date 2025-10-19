@@ -45,7 +45,7 @@ public class StatsService {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        Category category = categoryRepository.findByName(categoryName);
+        Category category = categoryRepository.findByName(categoryName).orElse(null);
         categoryName = category != null ? categoryName : null;
 
         User user = userRepository.findByUsername(username).orElse(null);
