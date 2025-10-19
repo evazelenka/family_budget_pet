@@ -172,12 +172,6 @@ public class StatsController {
         return "admin-reader/users-stats";
     }
 
-    @GetMapping("/user/{userId}/by-type")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_READER')")
-    public List<TypeStats> getUserStatsByType(@PathVariable Long userId) {
-        return statsService.getUserStatsByType(userId);
-    }
-
     @GetMapping("/user/{userId}/by-category")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_READER')")
     public List<CategoryStats> getUserStatsByCategory(@PathVariable Long userId) {

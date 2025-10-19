@@ -47,7 +47,7 @@ public class AuthController {
         httpSession.invalidate();
         model.addAttribute("user", new User());
         model.addAttribute("title", "Регистрация");
-        return "auth/register"; // имя Thymeleaf шаблона
+        return "auth/register";
     }
 
     @PostMapping("/register")

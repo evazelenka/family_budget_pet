@@ -4,6 +4,9 @@ import com.example.family_budget_pet.config.MyUserDetailsService;
 import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Role;
 import com.example.family_budget_pet.domain.User;
+import com.example.family_budget_pet.exceptions.GroupNotFoundException;
+import com.example.family_budget_pet.exceptions.RoleNotFoundException;
+import com.example.family_budget_pet.exceptions.UserNotFoundException;
 import com.example.family_budget_pet.repository.GroupRepository;
 import com.example.family_budget_pet.repository.RoleRepository;
 import com.example.family_budget_pet.repository.UserRepository;
@@ -41,8 +44,8 @@ public class UserService {
 
     @Transactional
     public User updateRole(Long userId, String newRole){
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
-        Role role = roleRepository.findByName(newRole).orElse(null);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("пользователь " + userId + " не найден"));
+        Role role = roleRepository.findByName(newRole).orElseThrow(() -> new RoleNotFoundException(newRole + " не найдена"));
         if (role != null){
             user.setRole(role);
         }
@@ -64,7 +67,7 @@ public class UserService {
         // Определяем роль
         String roleName = (mode.equals("admin"))
                 ? "ROLE_ADMIN" : "ROLE_USER";
-        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException(roleName));
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException(roleName + " не найдена"));
         user.setRole(role);
         return userRepository.save(user);
     }
@@ -72,15 +75,13 @@ public class UserService {
     @Transactional
     public void deleteGroup(Long adminId) {
         Group group = groupRepository.findByAdmin_Id(adminId)
-                .orElseThrow(() -> new RuntimeException("Group not found"));
+                .orElseThrow(() -> new GroupNotFoundException("группа админа " + adminId + " не найдена"));
 
-        // сначала убрать связь у пользователей
         for (User user : group.getUsers()) {
             user.setGroup(null);
             userRepository.save(user);
         }
 
-        // потом удалить саму группу
         groupRepository.delete(group);
     }
 
@@ -94,7 +95,8 @@ public class UserService {
         user.setGroup(null);
         group.getUsers().remove(user);
         if (user.getRole().getName().equals("ROLE_READER")){
-            Role role = roleRepository.findByName("ROLE_USER").orElse(null);
+            Role role = roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() -> new RoleNotFoundException("ROLE_USER не найдена"));
             user.setRole(role);
         }
         userRepository.save(user);
@@ -108,5 +110,26 @@ public class UserService {
         );
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
-}
 
+    @Transactional
+    public void changeRole(User user) throws RoleNotFoundException {
+        Role newRole = new Role();
+        if (user.getRole().getName().equals("ROLE_USER") || user.getRole().getName().equals("ROLE_READER"))
+            newRole = roleRepository.findByName("ROLE_ADMIN").
+                    orElseThrow(() -> new RoleNotFoundException("ROLE_ADMIN не найдена"));
+
+        else newRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RoleNotFoundException("ROLE_USER не найдена"));
+
+        user.setRole(newRole);
+        userRepository.save(user);
+
+        UserDetails updatedUserDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails,
+                updatedUserDetails.getPassword(),
+                updatedUserDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+}

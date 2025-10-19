@@ -63,12 +63,14 @@ public class UserController {
         return "redirect:/reader/users";
     }
 
-//    @PostMapping("/change-role")
-//    public String changeMyRole(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal){
-//        User user = userService.findByUsername(principal.getUsername());
-//        if (user.getRole().equals("ROLE_ADMIN")){
-//
-//        }
-//        return "redirect:/user/info";
-//    }
+    @PostMapping("/change-role")
+    public String changeMyRole(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
+        User user = userService.findByUsername(principal.getUsername());
+        if (user.getGroup() != null){
+            model.addAttribute("error", "Пока вы состоите в группе, невозможно сменить роль.");
+            return "redirect:/user/info";
+        }
+        userService.changeRole(user);
+        return "redirect:/admin/info";
+    }
 }

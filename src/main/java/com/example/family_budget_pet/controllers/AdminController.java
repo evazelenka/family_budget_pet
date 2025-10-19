@@ -1,6 +1,7 @@
 package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.*;
+import com.example.family_budget_pet.exceptions.UserNotFoundException;
 import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
@@ -42,8 +43,13 @@ public class AdminController {
     }
 
     @PostMapping("/users/{id}/role")
-    public String changeRole(@PathVariable Long id, @RequestParam String role){
-        userService.updateRole(id, role);
+    public String changeRole(@PathVariable Long id, @RequestParam String role, Model model){
+        try {
+            userService.updateRole(id, role);
+        } catch (UserNotFoundException e) {
+            model.addAttribute("error", "Что-то пошло не так... Обновите страницу.");
+            return "redirect:/admin/users";
+        }
         return "redirect:/admin/users";
     }
 

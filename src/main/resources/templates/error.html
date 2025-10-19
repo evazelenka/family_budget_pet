@@ -63,7 +63,7 @@
 <main class="d-flex justify-content-center align-items-center vh-100 text-white">
     <div class="w-100" style="max-width: 600px;">
         <div class="text-center py-5">
-            <h1 class="display-5 fw-bold">На странице произошла ошибка!</h1>
+            <h1 class="display-5 fw-bold">Упс, что-то пошло не так...</h1>
             <h2 class="fw-bold" th:text="${errorMessage} ?: 'Неизвестная ошибка.'">Неизвестная ошибка.</h2>
             <button th:onclick="|location.href='@{/kitty-cash/welcome}'|" type="button" class="btn btn-light btn-lg px-4 me-sm-3 fw-bold">
                 Вернуться на главную
