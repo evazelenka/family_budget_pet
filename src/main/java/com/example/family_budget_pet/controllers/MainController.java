@@ -12,7 +12,7 @@ public class MainController {
     @GetMapping("/welcome")
     public String welcome(Model model){
         model.addAttribute("title", "Главная");
-        return "index.html";
+        return "index2.html";
     }
 
     @GetMapping("/about")

@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login", "/kitty-cash/welcome", "/images/paw.svg", "/kitty-cash/about").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login", "/kitty-cash/welcome", "/images/**", "/kitty-cash/about", "/styles/**", "/fonts/**", "/**.svg").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler))
                 .formLogin(form -> form

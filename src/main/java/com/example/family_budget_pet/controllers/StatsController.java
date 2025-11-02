@@ -2,9 +2,6 @@ package com.example.family_budget_pet.controllers;
 
 import com.example.family_budget_pet.domain.*;
 import com.example.family_budget_pet.domain.dto.CategoryStats;
-import com.example.family_budget_pet.domain.dto.TypeStats;
-import com.example.family_budget_pet.domain.enums.CategoryType;
-import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.StatsService;
 import com.example.family_budget_pet.service.UserService;
@@ -27,7 +24,6 @@ public class StatsController {
 
     private final StatsService statsService;
     private final UserService userService;
-    private final CategoryService categoryService;
     private final GroupService groupService;
 
     @GetMapping("/my")
@@ -74,7 +70,7 @@ public class StatsController {
             }
         }
         String parameters = statsService.getParametersString(categoryName, dateStart, dateEnd);
-        List<CategoryStats> categoryStats = statsService.getCategoryStats(categoryName, principal.getUsername(), dateStart, dateEnd);
+        List<CategoryStats> categoryStats = statsService.getFilteredCategoryStats(categoryName, principal.getUsername(), dateStart, dateEnd);
 
         if (categoryStats != null){
             List<CategoryStats> expense = statsService.getExpenseFromCategoryStats(categoryStats);
@@ -149,7 +145,7 @@ public class StatsController {
         List<CategoryStats> categoryStats = new ArrayList<>();
         String parameters = statsService.getParametersString(categoryName, dateStart, dateEnd);
         if (!username.equals("-")){
-            categoryStats = statsService.getCategoryStats(categoryName, username, dateStart, dateEnd);
+            categoryStats = statsService.getFilteredCategoryStats(categoryName, username, dateStart, dateEnd);
             parameters = parameters + " Пользователь: " + username;
         } else {
             User user = userService.findByUsername(principal.getUsername());

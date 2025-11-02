@@ -22,7 +22,6 @@ public class AdminController {
     private final UserService userService;
     private final GroupService groupService;
     private final TransactionService tService;
-    private final CategoryService cService;
 
     @GetMapping("/users")
     public String listUsers(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){

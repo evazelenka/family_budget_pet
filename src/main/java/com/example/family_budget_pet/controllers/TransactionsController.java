@@ -3,7 +3,6 @@ package com.example.family_budget_pet.controllers;
 import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
-import com.example.family_budget_pet.service.CategoryService;
 import com.example.family_budget_pet.service.GroupService;
 import com.example.family_budget_pet.service.TransactionService;
 import com.example.family_budget_pet.service.UserService;
@@ -23,7 +22,6 @@ public class TransactionsController {
 
     private final TransactionService service;
     private final UserService userService;
-    private final CategoryService categoryService;
     private final GroupService groupService;
 
     @PostMapping("/add")

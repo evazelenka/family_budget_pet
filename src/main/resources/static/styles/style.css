@@ -1,0 +1,276 @@
+@font-face {
+  font-family: 'Inter'; /* Имя, которое вы будете использовать в дальнейшем CSS */
+  src: url('/fonts/Inter_28pt-Regular.ttf') format('truetype'); /* Указываем формат truetype */
+  font-weight: normal; /* Или 400 */
+  font-style: normal;
+  font-display: swap; /* Рекомендуется для лучшего опыта загрузки */
+}
+@font-face {
+  font-family: 'InterMedium'; /* Имя, которое вы будете использовать в дальнейшем CSS */
+  src: url('/fonts/Inter_28pt-Medium.ttf') format('truetype'); /* Указываем формат truetype */
+  font-weight: normal; /* Или 400 */
+  font-style: normal;
+  font-display: swap; /* Рекомендуется для лучшего опыта загрузки */
+}
+@font-face {
+  font-family: 'InterSemiBold'; /* Имя, которое вы будете использовать в дальнейшем CSS */
+  src: url('/fonts/Inter_28pt-SemiBold.ttf') format('truetype'); /* Указываем формат truetype */
+  font-weight: normal; /* Или 400 */
+  font-style: normal;
+  font-display: swap; /* Рекомендуется для лучшего опыта загрузки */
+}
+@font-face {
+  font-family: 'InterExtraBold'; /* Имя, которое вы будете использовать в дальнейшем CSS */
+  src: url('/fonts/Inter_28pt-ExtraBold.ttf') format('truetype'); /* Указываем формат truetype */
+  font-weight: normal; /* Или 400 */
+  font-style: normal;
+  font-display: swap; /* Рекомендуется для лучшего опыта загрузки */
+}
+* {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+}
+body {
+    background-color: #EBEAE8;
+	scroll-behavior: smooth;
+    color: #323232;
+}
+
+.center {
+	padding-left: calc(50% - 660px);
+	padding-right: calc(50% - 660px);
+}
+
+.header {
+	margin-top: 20px;
+}
+
+.navigationLinks {
+	display: flex;
+	width: 648px;
+	justify-content: space-between;
+}
+
+.navigation {
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    gap: 420px;
+}
+
+.navigation a {
+    color: #323232;
+}
+
+.navName {
+    font-family: 'InterSemiBold';
+    font-size: 40px;
+}
+
+.navigationLinks a {
+	font-size: 24px;
+	color: #323232;
+    font-family: 'InterMedium';
+    cursor: pointer;
+}
+
+.navLogo{
+    height: 60px;
+    width: 60px;
+    color: #323232;
+}
+
+.activeLink a {
+    color: #4B629C;
+}
+
+.navLogoName {
+    display: flex
+	;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-content: center;
+		justify-content: flex-start;
+		gap: 6px;
+		align-items: center;
+        cursor: pointer;
+}
+
+.topImg img {
+    padding-left: calc(50% - 358px);
+	padding-right: calc(50% - 358px);
+    margin-top: -6px;
+}
+
+h1 {
+    font-size: 64px;
+    font-family: 'InterSemiBold';
+}
+
+button {
+    border-radius: 32px;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'InterMedium';
+    font-size: 24px;
+    padding: 17px 24px;
+}
+
+.lightBtn {
+    color: #323232;
+    border-color: #323232;
+    border-width: 3px;
+    border-style: solid;
+
+}
+
+.darkBtn {
+    background: #323232;
+    color: #fff;
+    border: none;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: -50px;
+}
+
+.middle {
+    justify-items: center;
+    margin-top: 96px;
+    background-image: url(/images/cat\ 1.svg);
+    background-size: contain;
+    /* contain - изображение будет полностью видно, но могут появиться пустые места */
+
+    /* 3. Центрируем изображение */
+    background-position: right; 
+
+    /* 4. Отключаем повторение изображения */
+    background-repeat: no-repeat;
+}
+
+.grid-container {
+    display: grid;
+    /* Создаем 3 столбца одинаковой ширины */
+    grid-template-columns: repeat(3, 1fr); 
+    /* Создаем 2 строки автоматической высоты */
+    grid-template-rows: auto auto; 
+    gap: 135px; 
+    justify-items: flex-end;
+    justify-content: center;
+    margin: 80px auto;
+    align-items: flex-end;
+}
+
+.card {
+    border-color: #fff;
+    border-width: 3px;
+    border-radius: 13px;
+    border-style: solid;
+    text-align: center;
+    width: 350px;
+    height: 215px;
+}
+
+.card p {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.item-1 {
+    grid-row: 1;
+}
+
+.item-2 {
+    grid-row: 1;
+}
+
+.item-3 {
+    grid-row: 1;
+}
+
+h3 {
+    font-size: 26px;
+    font-family: 'InterMedium';
+    margin-bottom: 15px;
+    margin-top: 11px;
+}
+
+p {
+    font-size: 24px;
+    font-family: 'InterRegular';
+}
+
+.middleButtomText {
+    grid-row: 2; /* Устанавливаем во вторую строку */
+    grid-column-start: 1;
+    grid-column-end: 3;
+    font-size: 32px;
+    font-family: 'Inter';
+    justify-self: flex-start;
+	align-items: flex-end;
+}
+
+.buttom {
+    margin-top: 96px;
+    justify-items: center;
+}
+
+.buttom-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: auto auto; 
+    gap: 35px;
+    justify-items: stretch;
+    justify-content: center;
+    margin: 35px auto;
+}
+
+.buttom-container h2 {
+    font-size: 26px;
+    font-family: "InterMedium";
+    margin-bottom: 10px;
+}
+
+.buttom-container p, .buttomList {
+    font-size: 24px;
+    font-family: 'Inter';
+}
+
+.item-2-1 {
+    grid-row: 1;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.item-2-2 {
+    grid-row: 2;
+}
+
+.item-2-3 {
+    grid-row: 2;
+}
+
+.item-2-4 {
+    grid-row: 3;
+}
+
+.item-2-5 {
+    grid-row: 3;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 60px;
+}

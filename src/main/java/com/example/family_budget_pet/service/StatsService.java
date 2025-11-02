@@ -4,7 +4,6 @@ import com.example.family_budget_pet.domain.Category;
 import com.example.family_budget_pet.domain.Transaction;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.domain.dto.CategoryStats;
-import com.example.family_budget_pet.domain.dto.TypeStats;
 import com.example.family_budget_pet.domain.enums.CategoryType;
 import com.example.family_budget_pet.repository.CategoryRepository;
 import com.example.family_budget_pet.repository.TransactionRepository;
@@ -29,10 +28,11 @@ public class StatsService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<CategoryStats> getCategoryStats(
+    public List<CategoryStats> getFilteredCategoryStats(
             String categoryName,
             String username,
             LocalDateTime startDate,
@@ -64,7 +64,7 @@ public class StatsService {
             predicates.add(cb.lessThanOrEqualTo(root.get("date"), endDate));
         }
 
-        // группировка по категории
+        //Группировка по категории
         query.multiselect(
                         root.get("category").get("name").alias("categoryName"),
                         cb.sum(root.get("amount")).alias("total"),
@@ -73,9 +73,12 @@ public class StatsService {
                 .where(cb.and(predicates.toArray(new Predicate[0])))
                 .groupBy(root.get("category").get("name"));
 
-
         List<Tuple> tuples = entityManager.createQuery(query).getResultList();
 
+        return getCategoryStats(tuples);
+    }
+
+    private static List<CategoryStats> getCategoryStats(List<Tuple> tuples) {
         List<CategoryStats> result = new ArrayList<>();
         for (Tuple t : tuples) {
             result.add(new CategoryStats() {
@@ -95,12 +98,7 @@ public class StatsService {
                 }
             });
         }
-
         return result;
-    }
-
-    public List<TypeStats> getUserStatsByType(Long userId) {
-        return transactionRepository.findUserStatsByType(userId);
     }
 
     public List<CategoryStats> getUserStatsByCategory(Long userId) {
@@ -126,14 +124,14 @@ public class StatsService {
         return categoryStats
                 .stream()
                 .filter(c -> categoryRepository.findByName(c.getCategoryName())
-                                .getType().equals(CategoryType.EXPENSE)).toList();
+                                .equals(CategoryType.EXPENSE)).toList();
     }
 
     public List<CategoryStats> getIncomeFromCategoryStats(List<CategoryStats> categoryStats) {
         return categoryStats
                 .stream()
                 .filter(c -> categoryRepository.findByName(c.getCategoryName())
-                        .getType().equals(CategoryType.INCOME)).toList();
+                        .equals(CategoryType.INCOME)).toList();
     }
 
     public BigDecimal getTotalFromCategoryStats(List<CategoryStats> categoryStats) {
