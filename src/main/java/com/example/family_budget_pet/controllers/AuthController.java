@@ -4,7 +4,6 @@ import com.example.family_budget_pet.domain.Group;
 import com.example.family_budget_pet.domain.User;
 import com.example.family_budget_pet.service.AuthService;
 import com.example.family_budget_pet.service.GroupService;
-import com.example.family_budget_pet.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

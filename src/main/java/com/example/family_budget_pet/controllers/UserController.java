@@ -25,12 +25,12 @@ public class UserController {
     private final UserService userService;
     private final GroupService groupService;
 
-    @GetMapping("/info")
+    @GetMapping("/profile")
     public String userPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User user = userService.findByUsername(principal.getUsername());
         model.addAttribute("title", "Профиль");
         model.addAttribute("user", user);
-        return "general/info.html";
+        return "general/profile.html";
     }
 
     @PostMapping("/group/join")
@@ -42,13 +42,13 @@ public class UserController {
             group = groupService.findByToken(groupToken);
             if (group == null) {
                 model.addAttribute("error", "Группа с таким токеном не найдена!");
-                return "redirect:/user/info";
+                return "redirect:/user/profile";
             }
             user.setGroup(group);
             userService.save(user);
             groupService.addUser(group, user);
         }
-        return "redirect:/user/info";
+        return "redirect:/user/profile";
     }
 
     @PostMapping("/group/leave")
@@ -68,9 +68,9 @@ public class UserController {
         User user = userService.findByUsername(principal.getUsername());
         if (user.getGroup() != null){
             model.addAttribute("error", "Пока вы состоите в группе, невозможно сменить роль.");
-            return "redirect:/user/info";
+            return "redirect:/user/profile";
         }
         userService.changeRole(user);
-        return "redirect:/admin/info";
+        return "redirect:/admin/profile";
     }
 }

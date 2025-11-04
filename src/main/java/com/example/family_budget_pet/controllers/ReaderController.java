@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.Set;
 
 @Controller
@@ -23,12 +22,12 @@ public class ReaderController {
     private final UserService userService;
     private final GroupService groupService;
 
-    @GetMapping("/info")
+    @GetMapping("/profile")
     public String readerPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User reader = userService.findByUsername(principal.getUsername());
         model.addAttribute("title", "Профиль");
         model.addAttribute("user", reader);
-        return "general/info.html";
+        return "general/profile.html";
     }
 
     @GetMapping("/users")
@@ -53,6 +52,6 @@ public class ReaderController {
             return "redirect:/reader/users";
         }
         groupService.leaveGroup(reader, group);
-        return "redirect:/user/info";
+        return "redirect:/user/profile";
     }
 }

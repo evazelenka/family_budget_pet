@@ -49,12 +49,12 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/info")
+    @GetMapping("/profile")
     public String adminPage(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, Model model){
         User admin = userService.findByUsername(principal.getUsername());
         model.addAttribute("title", "Админка");
         model.addAttribute("user", admin);
-        return "general/info.html";
+        return "general/profile.html";
     }
 
     @PostMapping("/group/create")

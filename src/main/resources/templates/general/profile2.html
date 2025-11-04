@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} ?: 'KittyCash'">KittyCash</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+</head>
+<body id="header">
+<header class="header center">
+    <nav class="navigation">
+        <div class="navLogoName">
+            <a class="navLogo" th:href="@{/kitty-cash/welcome}"> <img th:src="@{/images/paw 1.svg}" alt="Logo"></a>
+            <a class="navName" th:href="@{/kitty-cash/welcome}">KittyCash</a>
+        </div>
+        <div class="navigationLinks">
+            <a th:href="@{/kitty-cash/welcome}">Главная</a>
+            <a class="activeLink" th:href="@{kitty-cash/profile}">Профиль</a>
+            <a th:href="@{kitty-cash/group}"
+            sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_READER')">Группа</a>
+            <a th:href="@{/transactions/my}">Транзакции</a>
+            <a th:href="@{/statistics/my}">Статистика</a>
+            <a th:href="@{auth/logout}">Выход</a>
+        </div>
+    </nav>
+</header>
+<main class="main center">
+    <div class="top">
+        <div class="topImg"><img th:src="@{/images/paw 2 1.svg}" alt="Logo" class="bigPaw"></div>
+        <div class="mainContent">
+            <div class="mainText">
+                <h1>
+                    <span style="color: #4B629C;">Бюджет,</span></h1>
+                <h1> который не царапается.</h1></div>
+
+            <button class="darkBtn" th:onclick="|location.href='@{/auth/login}'|" type="button">
+                Начните сейчас
+            </button>
+        </div>
+    </div>
+    <div class="middle center">
+        <div id="main"><h1>Кому подойдет?</h1></div>
+        <div class="grid-container">
+            <div class="card item-1">
+                <h3>Самозанятый</h3>
+                <p>Поможет самозанятому отслеживать все доходы и расходы и избежать ошибок при подготовке налоговых деклараций.</p>
+            </div>
+            <div class="card item-2">
+                <h3>Семья</h3>
+                <p>Поможет разумно спланировать бюджет и учесть потребности каждого с помощью семейного аккаунта.</p>
+            </div>
+            <div class="card item-3">
+                <h3>Предприниматель</h3>
+                <p>Поможет предпринимателю отслеживать и записывать все финансовые транзакции и упростит учет финансов.</p>
+            </div>
+            <div class="middleButtomText">
+                <h2>С KittyCash ваш бюджет</h2>
+                <h2>всегда преземлится на <span style="color: #4B629C;">четыре</span> лапы.</h2>
+            </div>
+            <div>
+                <button class="lightBtn" th:onclick="|location.href='@{/auth/login}'|" type="button">
+                    Начните сейчас
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="about" class="buttom center" >
+    <div><h1>О проекте</h1></div>
+    <div class="buttom-container">
+        <div class="item-2-1">
+            <p>Этот веб-проект создавался в первую очередь для личного использования — чтобы удобно рассчитывать и анализировать бюджет моей семьи.
+                Но кроме этого, проект служит профессиональной целью: демонстрирует мои навыки бэкенд-разработчика и дополнительно обогащает мое портфолио.</p>
+        </div>
+        <div class="item-2-2">
+            <h2 class="fw-bold">Основные возможности</h2>
+            <ul class="buttomList">
+                <li>Регистрация и управление пользователями</li>
+                <li>Просмотр и анализ финансовых данных</li>
+                <li>Статистика и аналитика расходов и доходов</li>
+                <li>Функции администрирования</li>
+            </ul>
+        </div>
+        <div class="item-2-3">
+            <h2>Главные особенности</h2>
+            <p>Простота и лаконичность — главное преимущество приложения. Чёткий и понятный интерфейс позволяет быстро ориентироваться и использовать все возможности без лишних усилий.
+            </p>
+        </div>
+        <div class="item-2-4">
+            <h2>Технологии</h2>
+            <p>Проект реализован с использованием современных технологий: <strong>Spring Data, Spring Security, Spring MVC, JPA, PostgreSQL, Docker</strong> для базы данных, а также <strong>Thymeleaf и Bootstrap</strong> для интерфейса.
+            </p>
+        </div>
+        <div class="item-2-5">
+            <h2>Планы на будущее</h2>
+            <p>В дальнейшем планируется расширить возможности администратора: появится управление несколькими группами пользователей и гибкая настройка прав доступа.</p>
+        </div>
+    </div>
+</div>
+<div class="footer center">
+    <button class="darkBtn" th:onclick="|location.href='https://github.com/evazelenka/family_budget_pet'|" type="button">
+        GitHub
+    </button>
+
+    <button class="lightBtn" th:onclick="|location.href='@{/auth/register}'|" type="button">
+        Telegram
+    </button>
+</div>
+</body>
+</html>
