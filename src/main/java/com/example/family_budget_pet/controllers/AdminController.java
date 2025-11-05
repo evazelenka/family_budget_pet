@@ -54,7 +54,7 @@ public class AdminController {
         User admin = userService.findByUsername(principal.getUsername());
         model.addAttribute("title", "Админка");
         model.addAttribute("user", admin);
-        return "general/profile.html";
+        return "general/profile2.html";
     }
 
     @PostMapping("/group/create")

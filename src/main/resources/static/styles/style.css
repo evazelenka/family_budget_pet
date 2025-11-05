@@ -274,3 +274,30 @@ p {
     gap: 15px;
     margin-bottom: 60px;
 }
+
+.userImageAndName {
+    max-width: 300px;
+    padding-bottom: 26px;
+    display: flex;
+    border-bottom: 2px solid #7C7C7B;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+}
+
+.userName {
+        font-family: 'InterMedium';
+}
+
+.userImage {
+    size: 95px 95px;
+}
+
+.userCard {
+    border-color: #6A6969;
+        border-width: 3px;
+        border-radius: 13px;
+        border-style: solid;
+    padding: 121px 87px;
+}
